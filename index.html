@@ -180,6 +180,12 @@
             border: none;
             pointer-events: none; /* Prevents interaction with the video controls */
         }
+
+        .carousel-slide video { /* If you switch to local <video> tags later */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
             
         .carousel-nav {
             position: absolute;
