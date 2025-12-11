@@ -647,15 +647,10 @@
                     </div>
                 </div>
                 <div id="conference" class="tab-content">
-                    <!-- Sub-Tabs for Years -->
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="conference-All">All</button>
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="conference-2025">2025</button>
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="conference-2024">2024</button>
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="conference-2023">2023</button>
+                    <div class="flex justify-center mb-8">
+                        <input type="text" id="conference-search" placeholder="Search by title, author, or year..." class="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 w-96">
                     </div>
-                    <!-- Sub-Tab Content -->
-                    <div id="conference-All" class="sub-tab-content active">
+                    <div id="conference-list">
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\conference\FLUCOME2025.png" alt="FLUCOME2025 Cover" class="publication-cover">
@@ -710,76 +705,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\FMFP2023.JPG" alt="FMFP2023.JPG Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Falling Film Thickness Measurement on Inclined Plates with and Without Surface Modification</h3>
-                                    <p class="text-gray-600">Naresh Khimaram Chandora, Advaith S., Mani. A. <em>10th International and 50th National Conference on Fluid Mechanics and Fluid Power, 20-22 December 2023, IIT Jodhpur, India</em>. <a href="https://link.springer.com/chapter/10.1007/978-981-97-6776-2_13" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                       
-                    <div id="conference-2025" class="sub-tab-content">
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\FLUCOME2025.png" alt="FLUCOME2025 Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Digital Holographic Study of Sessile Acetone Droplet Evaporation</h3>
-                                    <p class="text-gray-600">Jawahar Prakash J., Advaith S., Ganesan A.R., Mani A. <em>FLUCOME 2025 – 17th International Conference on Fluid Control, Measurements, and Visualization, 04-07 November 2025, Delft, The Netherlands</em>. <a href="https://www.flucome2025.com/" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Compact Desalination System</h3>
-                                    <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Thermodynamic and Performance analysis of an energy- efficient low-temperature grey water treatment system</h3>
-                                    <p class="text-gray-600">Prakash Koundinyan G., Thilagan K., Advaith S., Srikrishna Sahu <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="conference-2024" class="sub-tab-content">
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Insights into Heat Transfer and Pressure Drop: A Comparative Study of Copper Spray Coated and Plain Corrugated Gasket Plate Heat Exchangers</h3>
-                                    <p class="text-gray-600">Vijayakumar S., Advaith S., Mani. A. <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning, 13-15 March 2024, IIT Madras, Chennai, India</em>. <a href="https://ge.iitm.ac.in/ncrac-2024/" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Simulation studies and experimental validation on solar multi-effect desalination system in Kanyakumari</h3>
-                                    <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning, 13-15 March 2024, IIT Madras, Chennai, India</em>. <a href="https://ge.iitm.ac.in/ncrac-2024/" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\MHMT2024.png" alt="MHMT2024 Cover" class="publication-cover">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Investigations on Measuring Falling Film Thickness on Vertical Plates with and without Copper Metal Foam</h3>
-                                    <p class="text-gray-600">Naresh Chandora, Mani Annamalai, Advaith S. <em> 9th World Congress on Momentum, Heat and Mass Transfer (MHMT'24), 11-13 April 2024, Imperial College London Conference Center, London, United Kingdom</em>. <a href="https://avestia.com/MHMT2024_Proceedings/files/paper/ENFHT/ENFHT_262.pdf" style="color: blue;" target="_blank">Read article</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="conference-2023" class="sub-tab-content">
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\conference\FMFP2023.JPG" alt="FMFP2023.JPG Cover" class="publication-cover">
@@ -1270,11 +1195,13 @@
                 activeContent.classList.add('active');
                 // Activate default sub-tab within the active tab-content
                 const defaultSubTab = activeContent.querySelector('.sub-tab.active');
-                const defaultSubContentId = defaultSubTab ? defaultSubTab.dataset.subTab : activeContent.querySelector('.sub-tab').dataset.subTab;
-                activeContent.querySelectorAll('.sub-tab').forEach(st => st.classList.remove('active'));
-                activeContent.querySelectorAll('.sub-tab-content').forEach(sc => sc.classList.remove('active'));
-                activeContent.querySelector(`[data-sub-tab="${defaultSubContentId}"]`).classList.add('active');
-                activeContent.querySelector(`#${defaultSubContentId}`).classList.add('active');
+                const defaultSubContentId = defaultSubTab ? defaultSubTab.dataset.subTab : activeContent.querySelector('.sub-tab')?.dataset.subTab;
+                if (defaultSubContentId) {
+                    activeContent.querySelectorAll('.sub-tab').forEach(st => st.classList.remove('active'));
+                    activeContent.querySelectorAll('.sub-tab-content').forEach(sc => sc.classList.remove('active'));
+                    activeContent.querySelector(`[data-sub-tab="${defaultSubContentId}"]`).classList.add('active');
+                    activeContent.querySelector(`#${defaultSubContentId}`).classList.add('active');
+                }
             });
         });
         // Sub-tab functionality for all sub-tabs (including nested)
@@ -1376,6 +1303,18 @@
             journalSearch.addEventListener('input', () => {
                 const query = journalSearch.value.toLowerCase();
                 journalItems.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            });
+        }
+        // Conference search functionality
+        const conferenceSearch = document.getElementById('conference-search');
+        const conferenceItems = document.querySelectorAll('#conference-list .publication-item');
+        if (conferenceSearch) {
+            conferenceSearch.addEventListener('input', () => {
+                const query = conferenceSearch.value.toLowerCase();
+                conferenceItems.forEach(item => {
                     const text = item.textContent.toLowerCase();
                     item.style.display = text.includes(query) ? 'flex' : 'none';
                 });
