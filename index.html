@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -175,18 +136,16 @@
             top: 0;
             left: 0;
         }
-
         .carousel-slide iframe {
             border: none;
             pointer-events: none; /* Prevents interaction with the video controls */
         }
-
         .carousel-slide video { /* If you switch to local <video> tags later */
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-            
+           
         .carousel-nav {
             position: absolute;
             bottom: 20px;
@@ -335,7 +294,7 @@
                     <a href="#publications" class="nav-link text-gray-800 hover:text-blue-900">Publications</a>
                     <a href="#team" class="nav-link text-gray-800 hover:text-blue-900">Team</a>
                     <a href="#news" class="nav-link text-gray-800 hover:text-blue-900">News & Media</a>
-                    <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>    
+                    <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>
                     <a href="#contact" class="nav-link text-gray-800 hover:text-blue-900">Contact</a>
                 </div>
                 <div class="md:hidden flex items-center">
@@ -356,30 +315,29 @@
                 <a href="#publications" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Publications</a>
                 <a href="#team" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Team</a>
                 <a href="#news" class="block text-gray-800 hover:text-blue-900 px-3 py-2">News & Media</a>
-                <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>  
+                <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>
                 <a href="#contact" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Contact</a>
             </div>
         </div>
     </nav>
-
     <!-- Hero Section with Rolling Carousel -->
     <section id="home" class="relative min-h-screen">
         <div class="carousel">
             <div class="carousel-inner">
-                <div class="carousel-slide relative"> 
+                <div class="carousel-slide relative">
                         <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-1.MP4" autoplay loop muted playsinline></video>
                 </div>
-                <div class="carousel-slide relative"> 
+                <div class="carousel-slide relative">
                         <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-2.MP4" autoplay loop muted playsinline></video>
                 </div>
-                <div class="carousel-slide relative"> 
+                <div class="carousel-slide relative">
                         <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-3.MP4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide" style="background-image: url('header_img/IITMadras.jpg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/7205322480_Babbler in iitm.jpeg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/7205322480_Indian paradise flycatcher.jpeg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/8379826137_The New Academic complex when fully operational.jpeg')"></div>
-                <div class="carousel-slide" style="background-image: url('header_img/The buck, Gajendra Circle  and library in one shot the three epic things in our campus.jpeg')"></div>
+                <div class="carousel-slide" style="background-image: url('header_img/The buck, Gajendra Circle and library in one shot the three epic things in our campus.jpeg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/9003113088_Sunrise and sunset from Narmad rooftop.jpeg')"></div>
             </div>
             <div class="absolute inset-0 hero-overlay"></div>
@@ -400,7 +358,6 @@
             </div>
         </div>
     </section>
-
     <!-- About Section -->
     <section id="about" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -410,7 +367,6 @@
             </div>
         </div>
     </section>
-
     <!-- Projects Section -->
         <section id="projects" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -423,7 +379,7 @@
                                 <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="TRER">Translational Renewable Energy Research</button>
                                 <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="STMS">Smart Thermal Management Systems and Fluid Flow Diagnostics</button>
                         </div>
-                        <!-- Tab Content -->                            
+                        <!-- Tab Content -->
                         <div id="TRER" class="tab-content active">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -437,9 +393,9 @@
                                                         <img src="projects\LTGWT.JPG" alt="LTGWT Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Socially Relevant & Innovation Project (SRIP)</h3>
-                                                                <p class="text-gray-600"> <strong> Title: </strong> Low-temperature grey water treatment system for household and residential community </p> 
-                                                                <p class="text-gray-600"> <strong> Role: </strong> Principal Investigator</p> 
-                                                        </div>  
+                                                                <p class="text-gray-600"> <strong> Title: </strong> Low-temperature grey water treatment system for household and residential community </p>
+                                                                <p class="text-gray-600"> <strong> Role: </strong> Principal Investigator</p>
+                                                        </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
                                                         <img src="projects\INDEE3.JPG" alt="INDEE3 Project" class="w-full mx-auto object-cover">
@@ -450,11 +406,11 @@
                                                                 <p class="text-gray-600"><a href="https://www.sintef.no/en/projects/2025/indee3-sustainable-cooling-and-heating-in-india/" style="color: blue;" target="_blank">Read more on this</a> </p>
                                                         </div>
                                                 </div>
-                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">      
+                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
                                                         <img src="projects\IoE-CoE-II.JPG" alt="IoE-CoE-II Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Institute of Eminence - Centre of Excellence Research Project</h3>
-                                                                <p class="text-gray-600"><strong>Title:</strong> Domestic Compact Solar Desalination and Cold Storage Systems</p> 
+                                                                <p class="text-gray-600"><strong>Title:</strong> Domestic Compact Solar Desalination and Cold Storage Systems</p>
                                                                 <p class="text-gray-600"><strong>Role:</strong> Co-Principal Investigator</p>
                                                         </div>
                                                 </div>
@@ -463,7 +419,7 @@
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Research Based Consultancy Project with Industry</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Development of renewable energy driven cold storage with PCM-based thermal energy backup for agricultural produce preservation</p>
-                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator  </p><p>
+                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p><p>
                                                         </div>
                                                 </div>
                                         </div>
@@ -471,7 +427,7 @@
                                 <div id="TRER-done" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover"> 
+                                                        <img src="projects\JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Indo-UK Joint Faculty Bilateral Mobility Project (JFMBP)</h3>
                                                                 <p class="text-gray-600"><strong> Title: </strong> Optimizing Building Performance with Smart Glazing: A Multi-Aspect Analysis for Energy Efficiency and Renewable Integration. </p>
@@ -492,14 +448,14 @@
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">INDEE+: Future Refrigeration India </h3>
                                                                 <p class="text-gray-600"> An Indo-Norwegian Project</p>
-                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p> 
+                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>
                                                                 <p class="text-gray-600"><a href="https://www.ntnu.edu/indee" style="color: blue;" target="_blank">Read more on this</a> </p>
                                                         </div>
                                                 </div>
                                         </div>
                                 </div>
                         </div>
-                        
+                       
                         <div id="STMS" class="tab-content">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -509,20 +465,20 @@
                                 <!-- Sub-Tab Content -->
                                 <div id="STMS-going" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">      
+                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
                                                         <img src="projects\ISRO-IITM_ML.JPG" alt="ISRO-IITM_ML Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">ISRO-IITM Space Technology Cell Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Machine learning aided early failure detection for preventive maintenance of thermo-vacuum chambers</p>
                                                                 <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>
-                                                        </div>         
+                                                        </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">      
+                                                        <img src="projects\RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">New Faculty Seed Grant Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Real-Time Thermal Management and Data-Driven Alternate Ventilation Strategy for Energy-Efficient Building Design</p>
-                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>              
+                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
@@ -549,10 +505,8 @@
                                 </div>
                         </div>
             </div>
-    </section>     
-                        
- 
-
+    </section>
+                       
     <!-- Publications Section -->
     <section id="publications" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -569,14 +523,10 @@
                 </div>
                 <!-- Tab Content -->
                 <div id="journal" class="tab-content active">
-                    <!-- Sub-Tabs for Years -->
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="journal-2025">2025</button>
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="journal-2024">2024</button>
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="journal-2023">2023</button>
+                    <div class="flex justify-center mb-8">
+                        <input type="text" id="journal-search" placeholder="Search by title, author, or year..." class="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 w-96">
                     </div>
-                    <!-- Sub-Tab Content -->
-                    <div id="journal-2025" class="sub-tab-content active">
+                    <div id="journal-list">
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\journal\IJR.jpg" alt="IJR Cover" class="publication-cover">
@@ -595,8 +545,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="journal-2024" class="sub-tab-content">
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\journal\TSEP.jpg" alt="TSEP Cover" class="publication-cover">
@@ -624,8 +572,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="journal-2023" class="sub-tab-content">
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\journal\Energy AI.jpg" alt="Energy AI Cover" class="publication-cover">
@@ -635,16 +581,146 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\REJ.jpg" alt="REJ Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Assessing the impact of a novel hemispherical diffuser on a single-tank sensible thermal energy storage system</h3>
+                                    <p class="text-gray-600"> Dipti Ranjan Parida, Advaith S., Nikhil Dani, Saptarshi Basu.<em> Renewable Energy, Volume 183, January 2022, 202-218</em>. <a href="https://doi.org/10.1016/j.renene.2021.10.099" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\EJM-B_F.jpg" alt="EJM-B_F Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">On the generation and evolution of heated vortex rings in viscous fluids</h3>
+                                    <p class="text-gray-600"> Advaith S., Aswathi K.T., Saptarshi Basu.<em> European Journal of Mechanics - B/Fluids, Volume 91, January–February 2022, 107-120</em>. <a href="https://doi.org/10.1016/j.euromechflu.2021.09.014" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\REJ.jpg" alt="REJ Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental investigation on single-medium stratified thermal energy storage system</h3>
+                                    <p class="text-gray-600"> Advaith S., Dipti Ranjan Parida, Aswathi K.T., Nikhil Dani, Utpal Kumar Chetia, Kamanio Chattopadhyay, Saptarshi Basu.<em> Renewable Energy, Volume 164, February 2021, 146-155</em>. <a href="https://doi.org/10.1016/j.renene.2020.09.092" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\JFM.jpg" alt="JFM Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Understanding evolution of vortex rings in viscous fluids</h3>
+                                    <p class="text-gray-600"> Aashay Tinaikar, Advaith S., Basu S.<em> Journal of Fluid Mechanics, Volume 836, February 2018, 873 - 909</em>. <a href="https://doi.org/10.1017/jfm.2017.815" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\PoF.jpg" alt="PoF Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Interaction of vortex ring with a stratified finite thickness interface</h3>
+                                    <p class="text-gray-600"> Advaith S., Manu K.V., Aashay Tinaikar, Utpal Kumar Chetia, Saptarshi Basu.<em> Physics of Fluids, Volume 29, Issue 9, September 2017, 093602</em>. <a href="https://doi.org/10.1063/1.4994264" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\ate.jpg" alt="ATE Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Short and long-term sensitivity of lab-scale thermocline based thermal storage to flow disturbances</h3>
+                                    <p class="text-gray-600"> Sandeep Hatte, Carolina Mira-Hernández, Advaith S., Aashay Tinaikar, Utpal Kumar Chetia, Manu K.V., Kamanio Chattopadhyay, Justin A. Weibel, Suresh V. Garimella, Vinod Srinivasan, Saptarshi Basu.<em> Applied Thermal Engineering, Volume 109, Part B, October 2016, 936-948</em>. <a href="https://doi.org/10.1016/j.applthermaleng.2016.04.138" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\journal\ate.jpg" alt="ATE Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Spatio-temporal disruption of thermocline by successive laminar vortex pairs in a single tank thermal energy storage</h3>
+                                    <p class="text-gray-600"> Aashay Tinaikar, Advaith S., Utpal Kumar Chetia, Manu K.V., Saptarshi Basu.<em> Applied Thermal Engineering, Volume 109, Part B, October 2016, 924-935</em>. <a href="https://doi.org/10.1016/j.applthermaleng.2016.04.105" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="conference" class="tab-content">
                     <!-- Sub-Tabs for Years -->
                     <div class="flex justify-center space-x-4 mb-8">
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="conference-2025">2025</button>
+                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="conference-All">All</button>
+                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="conference-2025">2025</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="conference-2024">2024</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="conference-2023">2023</button>
                     </div>
                     <!-- Sub-Tab Content -->
+                    <div id="conference-All" class="sub-tab-content active">
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\FLUCOME2025.png" alt="FLUCOME2025 Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Digital Holographic Study of Sessile Acetone Droplet Evaporation</h3>
+                                    <p class="text-gray-600">Jawahar Prakash J., Advaith S., Ganesan A.R., Mani A. <em>FLUCOME 2025 – 17th International Conference on Fluid Control, Measurements, and Visualization, 04-07 November 2025, Delft, The Netherlands</em>. <a href="https://www.flucome2025.com/" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Compact Desalination System</h3>
+                                    <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Thermodynamic and Performance analysis of an energy- efficient low-temperature grey water treatment system</h3>
+                                    <p class="text-gray-600">Prakash Koundinyan G., Thilagan K., Advaith S., Srikrishna Sahu <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Insights into Heat Transfer and Pressure Drop: A Comparative Study of Copper Spray Coated and Plain Corrugated Gasket Plate Heat Exchangers</h3>
+                                    <p class="text-gray-600">Vijayakumar S., Advaith S., Mani. A. <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning, 13-15 March 2024, IIT Madras, Chennai, India</em>. <a href="https://ge.iitm.ac.in/ncrac-2024/" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Simulation studies and experimental validation on solar multi-effect desalination system in Kanyakumari</h3>
+                                    <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning, 13-15 March 2024, IIT Madras, Chennai, India</em>. <a href="https://ge.iitm.ac.in/ncrac-2024/" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\MHMT2024.png" alt="MHMT2024 Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Investigations on Measuring Falling Film Thickness on Vertical Plates with and without Copper Metal Foam</h3>
+                                    <p class="text-gray-600">Naresh Chandora, Mani Annamalai, Advaith S. <em> 9th World Congress on Momentum, Heat and Mass Transfer (MHMT'24), 11-13 April 2024, Imperial College London Conference Center, London, United Kingdom</em>. <a href="https://avestia.com/MHMT2024_Proceedings/files/paper/ENFHT/ENFHT_262.pdf" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                                <img src="images_J_C\conference\FMFP2023.JPG" alt="FMFP2023.JPG Cover" class="publication-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Falling Film Thickness Measurement on Inclined Plates with and Without Surface Modification</h3>
+                                    <p class="text-gray-600">Naresh Khimaram Chandora, Advaith S., Mani. A. <em>10th International and 50th National Conference on Fluid Mechanics and Fluid Power, 20-22 December 2023, IIT Jodhpur, India</em>. <a href="https://link.springer.com/chapter/10.1007/978-981-97-6776-2_13" style="color: blue;" target="_blank">Read article</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                       
                     <div id="conference-2025" class="sub-tab-content">
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
@@ -660,7 +736,7 @@
                                 <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Compact Desalination System</h3>
-                                    <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://www.polygeneration.net/" style="color: blue;" target="_blank">Read article</a></p>
+                                    <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
                                 </div>
                             </div>
                         </div>
@@ -669,7 +745,7 @@
                                 <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Thermodynamic and Performance analysis of an energy- efficient low-temperature grey water treatment system</h3>
-                                    <p class="text-gray-600">Prakash Koundinyan G., Thilagan K., Advaith S., Srikrishna Sahu <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://www.polygeneration.net/" style="color: blue;" target="_blank">Read article</a></p>
+                                    <p class="text-gray-600">Prakash Koundinyan G., Thilagan K., Advaith S., Srikrishna Sahu <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
                                 </div>
                             </div>
                         </div>
@@ -719,33 +795,40 @@
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Twisted lobe convergent-divergent nozzle for an ejector and a method thereof</h3>
-                                <p class="text-gray-600">A. Mani, S. Advaith and K. Sachin, 202341060300, September 2023 [Filed]</p>
+                                <p class="text-gray-600">Mani A., Advaith S. and Sachin K., 202341060300, September 2023 [Filed]</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="publication-item bg-white rounded-xl shadow-md p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">A diffuser for a single tank thermal energy storage system</h3>
+                                <p class="text-gray-600">Basu S., Parida D.R. and Advaith S., 201941011495, October 2020</p>
                             </div>
                         </div>
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Team Section -->
     <section id="team" class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Research Group</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Stars!</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-12">Meet the dedicated professionals leading our research initiatives.</p>
             </div>
             <div class="fade-in">
                 <!-- Main Tabs -->
                 <div class="flex justify-center space-x-4 mb-8">
-                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="guide">Myself</button>
+                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="guide">Faculty</button>
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="scholars">Research Scholars</button>
+                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="PDF">Post Doc</button>
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="staff">Staff</button>
+                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="Alumni">Alumni</button>
                 </div>
                 <!-- Tab Content -->
                 <div id="guide" class="tab-content active">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people/advaith.png" alt="Team Member" class="rounded-full  auto mb-4">
+                            <img src="people/advaith.png" alt="Team Member" class="rounded-full auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Dr. Advaith Sankar</h3>
                             <p class="text-gray-600">Assistant Professor</p>
                                 <div class="mt-4 flex justify-center space-x-6">
@@ -762,15 +845,9 @@
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="phd">Ph.D</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="ms">M.S</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech">M.Tech</button>
-                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF">Post Doc</button>
                     </div>
                     <!-- Sub-Tab Content -->
                     <div id="phd" class="sub-tab-content active">
-                        <div class="flex justify-center space-x-4 mb-8">
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="phd-ongoing">Ongoing</button>
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="phd-alumni">Alumni</button>
-                        </div>
-                        <div id="phd-ongoing" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
                                     <img src="people\vijayakumar.jpg" alt="vijayakumar PhD Team Member" class="rounded-full mx-auto mb-4">
@@ -801,7 +878,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Suparna_Dhara.png" alt="suparna - PhD Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people\suparna.png" alt="suparna - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Suparna Dhara</h3>
                                         <p class="text-gray-600">Ph.D Candidate</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -809,33 +886,12 @@
                                         </div>
                                 </div>
                             </div>
-                        </div>
-                        <div id="phd-alumni" class="sub-tab-content">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                        <img src="people\9445492154.jpg" alt="Dr. Thilagan" class="rounded-full mx-auto mb-4">                                        
-                                <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
-                                    <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
-                                </a>
-                                    <p class="text-gray-600">Ph.D (Graduated 2025)</p>
-                                        <div class="mt-4 flex justify-center space-x-6">
-                                                <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
-                                                <a href="https://www.researchgate.net/profile/Thilagan-Kannappan" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
-                                                <a href="https://www.linkedin.com/in/thilagan-k/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                       
                     <div id="ms" class="sub-tab-content">
-                        <div class="flex justify-center space-x-4 mb-8">
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="ms-ongoing">Ongoing</button>
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="ms-alumni">Alumni</button>
-                        </div>
-                        <div id="ms-ongoing" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="sachin.jpg" alt="Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                    <img src="people\Sachin.png" alt="Sachin MS Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Sachin Angad Kharsade</h3>
                                     <p class="text-gray-600">MS Student</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -843,7 +899,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Amith.jpeg" alt="Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                    <img src="people\Amith.png" alt="Amith MS Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Amit Kumar Goswami</h3>
                                     <p class="text-gray-600">MS Student</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -851,7 +907,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Rahul.png" alt="Rahul M.S Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                            <img src="people\Rahul_Ramadas.png" alt="Rahul M.S Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Rahul Ramadas</h3>
                                     <p class="text-gray-600">MS Student</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -859,122 +915,148 @@
                                         </div>
                                 </div>
                             </div>
-                        </div>
-                        <div id="ms-alumni" class="sub-tab-content">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Naresh.JPEG" alt="Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
-                                        <h3 class="text-xl font-semibold text-gray-900">Naresh Chandora</h3>
-                                    <p class="text-gray-600">MS (Graduated 2024)</p>
-                                        <div class="mt-4 flex justify-center space-x-6">
-                                                <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
-                                                <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
-                                                <a href="https://www.linkedin.com/in/naresh-chandora-040093115/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                       
                     <div id="mtech" class="sub-tab-content active">
-                        <div class="flex justify-center space-x-4 mb-8">
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-ongoing">Ongoing</button>
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-alumni">Alumni</button>
-                        </div>
-                        <div id="mtech-ongoing" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
                                     <img src="people\ramu.jpeg" alt="Ramu - MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Ramu Bodakunta</h3>
-                                    <p class="text-gray-600">M.Tech Student</p>
+                                    <p class="text-gray-600">M.Tech [2026]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
-                                                <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                <a href="https://www.linkedin.com/in/ramu-bodakunta-a9095a174/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
                                     <img src="people\Christy.jpg" alt="Christy MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Christy V Mathew</h3>
-                                    <p class="text-gray-600">M.Tech Student</p>
+                                    <p class="text-gray-600">M.Tech [2026]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="http://www.linkedin.com/in/christy-v-mathew-7b359b163" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div id="mtech-alumni" class="sub-tab-content">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\---.jpeg" alt="--- - MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
-                                <a href="#" target="_blank">
-                                    <h3 class="text-xl font-semibold text-gray-900">---</h3>
-                                </a>
-                                    <p class="text-gray-600">M.Tech (Graduated 2024)</p>
+                                    <img src="people\Jaya Prakash Nakka.png" alt="Jaya MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                        <h3 class="text-xl font-semibold text-gray-900">Jaya Prakash Nakka</h3>
+                                    <p class="text-gray-600">M.Tech [2027]</p>
+                                        <div class="mt-4 flex justify-center space-x-6">
+                                                <a href="https://www.linkedin.com/in/jaya-prakash-nakka" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                        </div>
+                                </div>
+                                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                    <img src="people\Artika.jpg" alt="Artika MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                        <h3 class="text-xl font-semibold text-gray-900">Artika Bansal</h3>
+                                    <p class="text-gray-600">M.Tech [2027]</p>
+                                        <div class="mt-4 flex justify-center space-x-6">
+                                                <a href="https://www.linkedin.com/in/artika-bansal-63b2a02aa/?originalSubdomain=in" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                        </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
-
-                    <div id="PDF" class="sub-tab-content active">
-                        <div class="flex justify-center space-x-4 mb-8">
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="PDF-ongoing">Ongoing</button>
-                            <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF-alumni">Alumni</button>
-                        </div>
-                        <div id="PDF-ongoing" class="sub-tab-content active">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                       
+                    </div>
+                </div>
+                <div id="PDF" class="tab-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                        <img src="people\9445492154.jpg" alt="Dr. Thilagan" class="rounded-full mx-auto mb-4">                                        
-                                <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
-                                    <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
-                                </a>
-                                    <p class="text-gray-600">Postdoctoral Researcher</p>
+                                        <img src="people\9445492154.jpg" alt="Dr. Thilagan" class="rounded-full mx-auto mb-4">
+                                        <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
+                                                <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
+                                        </a>
+                                        <p class="text-gray-600">Postdoctoral Researcher</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
                                                 <a href="https://www.researchgate.net/profile/Thilagan-Kannappan" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
                                                 <a href="https://www.linkedin.com/in/thilagan-k/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
-                            </div>
                         </div>
-                    </div>
-                        
-                    </div>
                 </div>
+               
                 <div id="staff" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\PRAKASH.jpeg" alt="Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people\PRAKASH.jpeg" alt="Prakash Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Prakash Koundinyan G</h3>
-                            <p class="text-gray-600">Project Officer</p>
+                            <p class="text-gray-600">Research Assistant</p>
                         </div>
-
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Shyam Sundar J A.jpg" alt="Team Member" class="rounded-full mx-auto mb-4">
-                            <h3 class="text-xl font-semibold text-gray-900">Shyam Sundar J A</h3>
-                            <p class="text-gray-600">Project Officer</p>
-                        </div>
-
-                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Ankur Bhansali.jpeg" alt="Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people\Ankur Bhansali.jpeg" alt="Ankur - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Ankur Bhansali</h3>
-                            <p class="text-gray-600">Project Officer</p>
+                            <p class="text-gray-600">Junior Research Fellow</p>
                         </div>
-
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Antro Jagatheesh M.png" alt="Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people\Aurosampad Mohanty.jpeg" alt="Aurosampad - Team Member" class="rounded-full mx-auto mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900">Aurosampad Mohanty</h3>
+                            <p class="text-gray-600">Junior Research Fellow</p>
+                        </div>
+                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                            <img src="people\Antro Jagatheesh M.png" alt="Antro Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Antro Jagatheesh</h3>
                             <p class="text-gray-600">Senior Technician</p>
                         </div>
-                            
+                           
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Lakshmi.jpg" alt="Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people\Lakshmi.jpg" alt="Lakshmi Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Mrs. Lakshmi</h3>
-                            <p class="text-gray-600">Senior Project Executive</p>
+                            <p class="text-gray-600">Senior Executive</p>
                         </div>
                    </div>
                 </div>
+                <div id="Alumni" class="tab-content">
+                    <div class="flex justify-center space-x-4 mb-8">
+                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="phd-Alumni">Ph.D</button>
+                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="ms-Alumni">M.S</button>
+                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-Alumni">M.Tech</button>
+                        <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF-Alumni">Post Doc</button>
+                    </div>
+                       
+                        <div id="phd-Alumni" class="sub-tab-content active">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                                <img src="people\9445492154.jpg" alt="Dr. Thilagan" class="rounded-full mx-auto mb-4">
+                                                <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
+                                                        <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
+                                                </a>
+                                                <p class="text-gray-600">Ph.D (Graduated 2025)</p>
+                                                <div class="mt-4 flex justify-center space-x-6">
+                                                        <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
+                                                        <a href="https://www.researchgate.net/profile/Thilagan-Kannappan" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
+                                                        <a href="https://www.linkedin.com/in/thilagan-k/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div id="ms-Alumni" class="sub-tab-content">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                                <img src="people\Naresh.png" alt="Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                                <h3 class="text-xl font-semibold text-gray-900">Naresh Chandora</h3>
+                                                <p class="text-gray-600">MS (Graduated 2024)</p>
+                                                <div class="mt-4 flex justify-center space-x-6">
+                                                        <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
+                                                        <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
+                                                        <a href="https://www.linkedin.com/in/naresh-chandora-040093115/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div id="mtech-Alumni" class="sub-tab-content">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                                <img src="people\Priyanshu Misra.png" alt="Priyanshu - MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                                <a href="https://www.linkedin.com/in/priyanshu-misra-3837831a8/" target="_blank">
+                                                        <h3 class="text-xl font-semibold text-gray-900">Priyanshu Misra</h3>
+                                                </a>
+                                                <p class="text-gray-600">M.Tech (Graduated 2024)</p>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+               
             </div>
         </div>
     </section>
-
     <!-- News & Media Section -->
     <section id="news" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1049,13 +1131,12 @@
             </div>
         </div>
     </section>
-
     <!-- Join Us -->
     <section id="career" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center fade-in">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Join Us</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-12">Jour our reserach group for positions available for project assistants, post-docs and prospective PhD/MS students are listed here.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-12">Curious to join our research group? Check out the various positions available.</p>
             </div>
             <div class="fade-in">
                 <!-- Main Tabs -->
@@ -1067,20 +1148,23 @@
                 </div>
                 <!-- Tab Content -->
                 <div id="PDF" class="tab-content active">
-                        <p class="text-gray-600">Please see <a href="https://www.iitm.ac.in/careers/post-doctoral-opportunities" style="color: blue;" target="_blank">here</a> for details for institute Post-Doctoral Fellowship. Women candidates have <a href="https://www.iitm.ac.in/careers/post-doctoral-opportunities" style="color: blue;" target="_blank">special fellowships</a> from IIT Madras. Send your CV and a short write-up of your proposed area of research to me at advaith[at]iitm[dot]ac[dot]in </p>
+                        <p class="text-gray-600">Please see <a href="https://www.iitm.ac.in/careers/post-doctoral-opportunities" style="color: blue;" target="_blank">here</a> for details for institute Post-Doctoral Fellowship. Women candidates have <a href="https://www.iitm.ac.in/careers/post-doctoral-opportunities" style="color: blue;" target="_blank">special fellowships</a> from IIT Madras. </p>
+                        <p class="text-gray-600">We are open to hosting national-level postdoctoral fellowships, such as <a href="https://anrfonline.in/ANRF/npdf" style="color: blue;" target="_blank">N-PDF</a> and <a href="https://dst.gov.in/wise-post-doctoral-fellowship-wise-pdf" style="color: blue;" target="_blank">WISE-PDF</a>. </p>
+                        <p class="text-gray-600">Send your CV and a short write-up of your proposed area of research to me at advaith[at]iitm[dot]ac[dot]in</p>
                 </div>
                 <div id="phsms" class="tab-content">
-                        <p class="text-gray-600">Applications are invited at anytime from eligible candidates through <a href="https://research.iitm.ac.in/index.html" style="color: blue;" target="_blank">IIT-M reserach portal </a>.</p>
+                        <p class="text-gray-600">Applications are invited at anytime from eligible candidates through <a href="https://research.iitm.ac.in:9955/" style="color: blue;" target="_blank">IIT-M reserach portal </a>.</p>
                 </div>
                 <div id="projpos" class="tab-content">
-                        <p class="text-gray-600">Will update soon.</p>
+                        <p class="text-gray-600">Watch this space for future announcements.</p>
                 </div>
                 <div id="intrun" class="tab-content">
-                        <p class="text-gray-600">Will update soon.</p>
+                        <p class="text-gray-600">We encourage only summer and long-term internships. </p>
+                        <p class="text-gray-600">Please contact me with your detailed CV and your Statement of Purpose. </p>
+                        <p class="text-gray-600">Feel free to explore the <a href="https://ssp.iitm.ac.in/summer-fellowship-registration" style="color: blue;" target="_blank">IITM Summer Fellowship Programme</a>.</p>
                 </div>
         </div>
     </section>
-
     <!-- Contact Section -->
     <section id="contact" class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1117,15 +1201,15 @@
             </div>
         </div>
     </div>
-    
+   
     <!-- Google Map -->
     <div class="contact-map">
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100!2d80.2274318!3d12.9910923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52673043960081%3A0xd18bd9bbda35314e!2sNew%20Academic%20Complex%202%20-%20NAC2%20block!5e0!3m2!1sen!2sus!4v1698800000001!5m2!1sen!2sus" 
-            width="150%" 
-            height="400" 
-            style="border:0; border-radius: 0.75rem;" 
-            allowfullscreen="" 
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100!2d80.2274318!3d12.9910923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52673043960081%3A0xd18bd9bbda35314e!2sNew%20Academic%20Complex%202%20-%20NAC2%20block!5e0!3m2!1sen!2sus!4v1698800000001!5m2!1sen!2sus"
+            width="150%"
+            height="400"
+            style="border:0; border-radius: 0.75rem;"
+            allowfullscreen=""
             loading="lazy">
         </iframe>
     </div>
@@ -1133,7 +1217,6 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1147,7 +1230,6 @@
             </div>
         </div>
     </footer>
-
     <script>
         // Mobile menu toggle
         const menuToggle = document.getElementById('menu-toggle');
@@ -1155,7 +1237,6 @@
         menuToggle.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-
         // Fade-in animations on scroll
         const fadeIns = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {
@@ -1165,9 +1246,7 @@
                 }
             });
         }, { threshold: 0.2 });
-
         fadeIns.forEach(element => observer.observe(element));
-
         // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1178,11 +1257,9 @@
                 mobileMenu.classList.add('hidden');
             });
         });
-
         // Tab functionality for main tabs
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
-
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const section = tab.closest('section');
@@ -1191,7 +1268,6 @@
                 tab.classList.add('active');
                 const activeContent = section.querySelector(`#${tab.dataset.tab}`);
                 activeContent.classList.add('active');
-
                 // Activate default sub-tab within the active tab-content
                 const defaultSubTab = activeContent.querySelector('.sub-tab.active');
                 const defaultSubContentId = defaultSubTab ? defaultSubTab.dataset.subTab : activeContent.querySelector('.sub-tab').dataset.subTab;
@@ -1201,11 +1277,9 @@
                 activeContent.querySelector(`#${defaultSubContentId}`).classList.add('active');
             });
         });
-
         // Sub-tab functionality for all sub-tabs (including nested)
         const subTabs = document.querySelectorAll('.sub-tab');
         const subTabContents = document.querySelectorAll('.sub-tab-content');
-
         subTabs.forEach(subTab => {
             subTab.addEventListener('click', () => {
                 const parent = subTab.closest('.sub-tab-content') || subTab.closest('.tab-content');
@@ -1220,13 +1294,11 @@
                 }
             });
         });
-
         // Hero carousel functionality
         const carouselInner = document.querySelector('.carousel-inner');
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.carousel-dot');
         let currentSlide = 0;
-
         function showSlide(index) {
             if (index >= slides.length) {
                 index = 0;
@@ -1236,7 +1308,6 @@
             carouselInner.style.transform = `translateX(-${index * 100}%)`;
             dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
             currentSlide = index;
-
             // Update image sources if placeholders are present
             slides.forEach((slide, i) => {
                 const img = slide.querySelector('img');
@@ -1245,13 +1316,10 @@
                 }
             });
         }
-
         function nextSlide() {
             showSlide(currentSlide + 1);
         }
-
         let autoSlide = setInterval(nextSlide, 5000);
-
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
                 clearInterval(autoSlide);
@@ -1259,13 +1327,11 @@
                 autoSlide = setInterval(nextSlide, 5000);
             });
         });
-
         // Media carousel functionality
         const mediaCarouselInner = document.querySelector('.media-carousel-inner');
         const mediaSlides = document.querySelectorAll('.media-slide');
         const mediaDots = document.querySelectorAll('.media-dot');
         let currentMediaSlide = 0;
-
         function showMediaSlide(index) {
             if (index >= mediaSlides.length) {
                 index = 0;
@@ -1278,17 +1344,13 @@
             mediaDots.forEach((dot, i) => dot.classList.toggle('active', i === index));
             currentMediaSlide = index;
         }
-
         function nextMediaSlide() {
             showMediaSlide(currentMediaSlide + 1);
         }
-
         function prevMediaSlide() {
             showMediaSlide(currentMediaSlide - 1);
         }
-
         let autoMediaSlide = setInterval(nextMediaSlide, 5000);
-
         mediaDots.forEach(dot => {
             dot.addEventListener('click', () => {
                 clearInterval(autoMediaSlide);
@@ -1296,7 +1358,6 @@
                 autoMediaSlide = setInterval(nextMediaSlide, 5000);
             });
         });
-
         // Arrow button functionality
         document.querySelectorAll('.media-arrow').forEach(arrow => {
             arrow.addEventListener('click', () => {
@@ -1304,11 +1365,22 @@
                 autoMediaSlide = setInterval(nextMediaSlide, 5000);
             });
         });
-
         // Update carousel on window resize
         window.addEventListener('resize', () => {
             showMediaSlide(currentMediaSlide);
         });
+        // Journal search functionality
+        const journalSearch = document.getElementById('journal-search');
+        const journalItems = document.querySelectorAll('#journal-list .publication-item');
+        if (journalSearch) {
+            journalSearch.addEventListener('input', () => {
+                const query = journalSearch.value.toLowerCase();
+                journalItems.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            });
+        }
     </script>
 </body>
 </html>
