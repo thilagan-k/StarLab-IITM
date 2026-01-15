@@ -1,4 +1,43 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -136,16 +175,18 @@
             top: 0;
             left: 0;
         }
+
         .carousel-slide iframe {
             border: none;
             pointer-events: none; /* Prevents interaction with the video controls */
         }
+
         .carousel-slide video { /* If you switch to local <video> tags later */
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-           
+            
         .carousel-nav {
             position: absolute;
             bottom: 20px;
@@ -294,7 +335,7 @@
                     <a href="#publications" class="nav-link text-gray-800 hover:text-blue-900">Publications</a>
                     <a href="#team" class="nav-link text-gray-800 hover:text-blue-900">Team</a>
                     <a href="#news" class="nav-link text-gray-800 hover:text-blue-900">News & Media</a>
-                    <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>
+                    <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>    
                     <a href="#contact" class="nav-link text-gray-800 hover:text-blue-900">Contact</a>
                 </div>
                 <div class="md:hidden flex items-center">
@@ -315,29 +356,30 @@
                 <a href="#publications" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Publications</a>
                 <a href="#team" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Team</a>
                 <a href="#news" class="block text-gray-800 hover:text-blue-900 px-3 py-2">News & Media</a>
-                <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>
+                <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>  
                 <a href="#contact" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Contact</a>
             </div>
         </div>
     </nav>
+
     <!-- Hero Section with Rolling Carousel -->
     <section id="home" class="relative min-h-screen">
         <div class="carousel">
             <div class="carousel-inner">
-                <div class="carousel-slide relative">
+                <div class="carousel-slide relative"> 
                         <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-1.MP4" autoplay loop muted playsinline></video>
                 </div>
-                <div class="carousel-slide relative">
+                <div class="carousel-slide relative"> 
                         <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-2.MP4" autoplay loop muted playsinline></video>
                 </div>
-                <div class="carousel-slide relative">
-                        <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-3.MP4" autoplay loop muted playsinline></video>
+                <div class="carousel-slide relative"> 
+                        <video class="absolute top-0 left-0 w-full h-full" src="header_img/Video/Grok-Video-3.1.mp4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide" style="background-image: url('header_img/IITMadras.jpg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/7205322480_Babbler in iitm.jpeg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/7205322480_Indian paradise flycatcher.jpeg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/8379826137_The New Academic complex when fully operational.jpeg')"></div>
-                <div class="carousel-slide" style="background-image: url('header_img/The buck, Gajendra Circle and library in one shot the three epic things in our campus.jpeg')"></div>
+                <div class="carousel-slide" style="background-image: url('header_img/The buck, Gajendra Circle  and library in one shot the three epic things in our campus.jpeg')"></div>
                 <div class="carousel-slide" style="background-image: url('header_img/9003113088_Sunrise and sunset from Narmad rooftop.jpeg')"></div>
             </div>
             <div class="absolute inset-0 hero-overlay"></div>
@@ -358,6 +400,7 @@
             </div>
         </div>
     </section>
+
     <!-- About Section -->
     <section id="about" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -367,6 +410,7 @@
             </div>
         </div>
     </section>
+
     <!-- Projects Section -->
         <section id="projects" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -379,7 +423,7 @@
                                 <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="TRER">Translational Renewable Energy Research</button>
                                 <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="STMS">Smart Thermal Management Systems and Fluid Flow Diagnostics</button>
                         </div>
-                        <!-- Tab Content -->
+                        <!-- Tab Content -->                            
                         <div id="TRER" class="tab-content active">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -393,9 +437,9 @@
                                                         <img src="projects\LTGWT.JPG" alt="LTGWT Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Socially Relevant & Innovation Project (SRIP)</h3>
-                                                                <p class="text-gray-600"> <strong> Title: </strong> Low-temperature grey water treatment system for household and residential community </p>
-                                                                <p class="text-gray-600"> <strong> Role: </strong> Principal Investigator</p>
-                                                        </div>
+                                                                <p class="text-gray-600"> <strong> Title: </strong> Low-temperature grey water treatment system for household and residential community </p> 
+                                                                <p class="text-gray-600"> <strong> Role: </strong> Principal Investigator</p> 
+                                                        </div>  
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
                                                         <img src="projects\INDEE3.JPG" alt="INDEE3 Project" class="w-full mx-auto object-cover">
@@ -406,11 +450,11 @@
                                                                 <p class="text-gray-600"><a href="https://www.sintef.no/en/projects/2025/indee3-sustainable-cooling-and-heating-in-india/" style="color: blue;" target="_blank">Read more on this</a> </p>
                                                         </div>
                                                 </div>
-                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">      
                                                         <img src="projects\IoE-CoE-II.JPG" alt="IoE-CoE-II Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Institute of Eminence - Centre of Excellence Research Project</h3>
-                                                                <p class="text-gray-600"><strong>Title:</strong> Domestic Compact Solar Desalination and Cold Storage Systems</p>
+                                                                <p class="text-gray-600"><strong>Title:</strong> Domestic Compact Solar Desalination and Cold Storage Systems</p> 
                                                                 <p class="text-gray-600"><strong>Role:</strong> Co-Principal Investigator</p>
                                                         </div>
                                                 </div>
@@ -419,7 +463,7 @@
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Research Based Consultancy Project with Industry</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Development of renewable energy driven cold storage with PCM-based thermal energy backup for agricultural produce preservation</p>
-                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p><p>
+                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator  </p><p>
                                                         </div>
                                                 </div>
                                         </div>
@@ -427,7 +471,7 @@
                                 <div id="TRER-done" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects\JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover"> 
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Indo-UK Joint Faculty Bilateral Mobility Project (JFMBP)</h3>
                                                                 <p class="text-gray-600"><strong> Title: </strong> Optimizing Building Performance with Smart Glazing: A Multi-Aspect Analysis for Energy Efficiency and Renewable Integration. </p>
@@ -448,14 +492,14 @@
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">INDEE+: Future Refrigeration India </h3>
                                                                 <p class="text-gray-600"> An Indo-Norwegian Project</p>
-                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>
+                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p> 
                                                                 <p class="text-gray-600"><a href="https://www.ntnu.edu/indee" style="color: blue;" target="_blank">Read more on this</a> </p>
                                                         </div>
                                                 </div>
                                         </div>
                                 </div>
                         </div>
-                       
+                        
                         <div id="STMS" class="tab-content">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -465,24 +509,24 @@
                                 <!-- Sub-Tab Content -->
                                 <div id="STMS-going" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                                                <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">      
                                                         <img src="projects\ISRO-IITM_ML.JPG" alt="ISRO-IITM_ML Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">ISRO-IITM Space Technology Cell Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Machine learning aided early failure detection for preventive maintenance of thermo-vacuum chambers</p>
                                                                 <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>
-                                                        </div>
+                                                        </div>         
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects\RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">      
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">New Faculty Seed Grant Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Real-Time Thermal Management and Data-Driven Alternate Ventilation Strategy for Energy-Efficient Building Design</p>
-                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>
+                                                                <p class="text-gray-600"><strong>Role:</strong> Principal Investigator </p>              
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\SMART-EV.JPG" alt="SMART-EV Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects\SMART-EV.png" alt="SMART-EV Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Prime Minister's Early Career Research Grant</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Hybrid & Safe-Modular-Adaptive-Robust-Thermal (SMART) management system for Electric Vehicle Batteries </p>
@@ -505,20 +549,22 @@
                                 </div>
                         </div>
             </div>
-    </section>
-                       
+    </section>     
+                        
+ 
+
     <!-- Publications Section -->
     <section id="publications" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center fade-in">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Publications</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-12">Explore our peer-reviewed publications showcasing our research contributions.</p>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-12">Explore peer-reviewed publications showcasing our research contributions.</p>
             </div>
             <div class="fade-in">
                 <!-- Main Tabs -->
                 <div class="flex justify-center space-x-4 mb-8">
-                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="journal">Journal</button>
-                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="conference">Conference</button>
+                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="journal">Journals</button>
+                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="conference">Conferences</button>
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="patents">Patents</button>
                 </div>
                 <!-- Tab Content -->
@@ -527,7 +573,8 @@
                         <input type="text" id="journal-search" placeholder="Search by title, author, or year..." class="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 w-96">
                     </div>
                     <div id="journal-list">
-                        <div class="space-y-6">
+                        <!-- New Journal Start-->
+                        <div class="space-y-6"> 
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\journal\IJR.jpg" alt="IJR Cover" class="publication-cover">
                                 <div>
@@ -536,6 +583,7 @@
                                 </div>
                             </div>
                         </div>
+                       <!-- New Journal End-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\journal\Solar compass.jpg" alt="Solar Compass Cover" class="publication-cover">
@@ -646,11 +694,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="conference" class="tab-content">
                     <div class="flex justify-center mb-8">
                         <input type="text" id="conference-search" placeholder="Search by title, author, or year..." class="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 w-96">
                     </div>
                     <div id="conference-list">
+                        <!-- New Conference Start-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\conference\FLUCOME2025.png" alt="FLUCOME2025 Cover" class="publication-cover">
@@ -660,6 +710,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- New Conference End-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
@@ -733,6 +784,7 @@
             </div>
         </div>
     </section>
+
     <!-- Team Section -->
     <section id="team" class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -744,7 +796,7 @@
                 <!-- Main Tabs -->
                 <div class="flex justify-center space-x-4 mb-8">
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 active" data-tab="guide">Faculty</button>
-                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="scholars">Research Scholars</button>
+                    <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="scholars">Research Scholars</button>                    
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="PDF">Post Doc</button>
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="staff">Staff</button>
                     <button class="tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-100 hover:bg-gray-200" data-tab="Alumni">Alumni</button>
@@ -753,7 +805,7 @@
                 <div id="guide" class="tab-content active">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people/advaith.png" alt="Dr. Advaith Sankar" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                            <img src="people/advaith.png" alt="Team Member" class="rounded-full  auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Dr. Advaith Sankar</h3>
                             <p class="text-gray-600">Assistant Professor</p>
                                 <div class="mt-4 flex justify-center space-x-6">
@@ -775,9 +827,9 @@
                     <div id="phd" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\vijayakumar.jpg" alt="Vijayakumar S." class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\vijayakumar_s.png" alt="Vijayakumar - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Vijayakumar S.</h3>
-                                    <p class="text-gray-600">Ph.D Candidate</p>
+                                        <p class="text-gray-600">Ph.D Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="https://scholar.google.com/citations?user=ncY-H_UAAAAJ&hl=en&oi=ao" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
                                                 <a href="https://www.researchgate.net/profile/Vijayakumar-S-2?ev=hdr_xprf" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
@@ -785,38 +837,40 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Jawahar.jpeg" alt="Jawahar Prakash" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\Jawahar_Prakash.png" alt="Jawahar - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Jawahar Prakash</h3>
-                                    <p class="text-gray-600">Ph.D Candidate</p>
+                                        <p class="text-gray-600">Ph.D Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="https://www.linkedin.com/in/jawahar-prakash-618629131/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\durga.jpeg" alt="Durga Prasad Pydi" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\Durga Prasad Pydi.png" alt="Durga - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Durga Prasad Pydi</h3>
-                                    <p class="text-gray-600">Ph.D Candidate</p>
+                                        <p class="text-gray-600">Ph.D Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="https://scholar.google.com/citations?hl=en&user=ybH9NKkAAAAJ" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
                                                 <a href="https://www.researchgate.net/profile/Durga-Pydi-2/research" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
                                                 <a href="https://www.linkedin.com/in/durga-prasad-9715b2129/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
+                               <!-- New PhD Start-->
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\suparna.png" alt="Suparna Dhara" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\suparna.png" alt="suparna - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Suparna Dhara</h3>
                                         <p class="text-gray-600">Ph.D Candidate</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="https://www.linkedin.com/in/suparna-dhara-90b818321/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
+                                 <!-- New PhD End-->
                             </div>
                     </div>
-                       
+                        
                     <div id="ms" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Sachin.png" alt="Sachin Angad Kharsade" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\Sachin.png" alt="Sachin MS Team Member" class="w-24 h-30 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Sachin Angad Kharsade</h3>
                                     <p class="text-gray-600">MS Student</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -824,15 +878,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Amith.png" alt="Amit Kumar Goswami" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
-                                        <h3 class="text-xl font-semibold text-gray-900">Amit Kumar Goswami</h3>
-                                    <p class="text-gray-600">MS Student</p>
-                                        <div class="mt-4 flex justify-center space-x-6">
-                                                <a href="https://www.linkedin.com/in/amit-kumar-goswami-6533aa244/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
-                                        </div>
-                                </div>
-                                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                            <img src="people\Rahul_Ramadas.png" alt="Rahul Ramadas" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                            <img src="people\Rahul_Ramadas.png" alt="Rahul M.S Team Member" class="w-24 h-30 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Rahul Ramadas</h3>
                                     <p class="text-gray-600">MS Student</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -841,11 +887,11 @@
                                 </div>
                             </div>
                     </div>
-                       
+                        
                     <div id="mtech" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\ramu.jpeg" alt="Ramu Bodakunta" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\ramu.jpeg" alt="Ramu - MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Ramu Bodakunta</h3>
                                     <p class="text-gray-600">M.Tech [2026]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -853,7 +899,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Christy.jpg" alt="Christy V Mathew" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\Christy.jpg" alt="Christy MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Christy V Mathew</h3>
                                     <p class="text-gray-600">M.Tech [2026]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -861,7 +907,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Jaya Prakash Nakka.png" alt="Jaya Prakash Nakka" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\Jaya Prakash Nakka.png" alt="Jaya MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Jaya Prakash Nakka</h3>
                                     <p class="text-gray-600">M.Tech [2027]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -869,7 +915,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Artika.jpg" alt="Artika Bansal" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                    <img src="people\Artika.jpg" alt="Artika MTech Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Artika Bansal</h3>
                                     <p class="text-gray-600">M.Tech [2027]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -878,17 +924,18 @@
                                 </div>
                             </div>
                         </div>
-                       
+                        
                     </div>
                 </div>
+
                 <div id="PDF" class="tab-content">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                        <img src="people\9445492154.jpg" alt="Dr. Thilagan K." class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                        <img src="people\Thilagan_K.png" alt="Dr. Thilagan" class="rounded-full mx-auto mb-4">                                        
                                         <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
                                                 <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
                                         </a>
-                                        <p class="text-gray-600">Postdoctoral Researcher</p>
+                                        <p class="text-gray-600">Post Doctoral Researcher</p>
                                         <div class="mt-4 flex justify-center space-x-6">
                                                 <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
                                                 <a href="https://www.researchgate.net/profile/Thilagan-Kannappan" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
@@ -897,37 +944,41 @@
                                 </div>
                         </div>
                 </div>
-               
+                
                 <div id="staff" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\PRAKASH.jpeg" alt="Prakash Koundinyan G" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                            <img src="people\Prakash_G.png" alt="Prakash Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Prakash Koundinyan G</h3>
                             <p class="text-gray-600">Research Assistant</p>
                         </div>
+
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Ankur Bhansali.jpeg" alt="Ankur Bhansali" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                            <img src="people\Ankur Bhansali.png" alt="Ankur -  Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Ankur Bhansali</h3>
                             <p class="text-gray-600">Junior Research Fellow</p>
                         </div>
+
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Aurosampad Mohanty.jpeg" alt="Aurosampad Mohanty" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                            <img src="people\Aurosampad Mohanty.png" alt="Aurosampad - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Aurosampad Mohanty</h3>
                             <p class="text-gray-600">Junior Research Fellow</p>
                         </div>
+
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Antro Jagatheesh M.png" alt="Antro Jagatheesh" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                            <img src="people\Antro Jagatheesh.png" alt="Antro Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Antro Jagatheesh</h3>
                             <p class="text-gray-600">Senior Technician</p>
                         </div>
-                           
+                            
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Lakshmi.jpg" alt="Mrs. Lakshmi" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
-                            <h3 class="text-xl font-semibold text-gray-900">Mrs. Lakshmi</h3>
+                            <img src="people\Lakshmi_1.png" alt="Lakshmi Team Member" class="rounded-full mx-auto mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900">Lakshmi</h3>
                             <p class="text-gray-600">Senior Executive</p>
                         </div>
                    </div>
                 </div>
+
                 <div id="Alumni" class="tab-content">
                     <div class="flex justify-center space-x-4 mb-8">
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 active" data-sub-tab="phd-Alumni">Ph.D</button>
@@ -935,15 +986,16 @@
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-Alumni">M.Tech</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF-Alumni">Post Doc</button>
                     </div>
-                       
+                        
                         <div id="phd-Alumni" class="sub-tab-content active">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\9445492154.jpg" alt="Dr. Thilagan K." class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                                <img src="people\Thilagan_K.png" alt="Dr. Thilagan" class="rounded-full mx-auto mb-4">                                        
                                                 <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
                                                         <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
                                                 </a>
                                                 <p class="text-gray-600">Ph.D (Graduated 2025)</p>
+                                                <p class="text-gray-600">Last known : Post Doctoral Researcher </p>
                                                 <div class="mt-4 flex justify-center space-x-6">
                                                         <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
                                                         <a href="https://www.researchgate.net/profile/Thilagan-Kannappan" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
@@ -952,36 +1004,73 @@
                                         </div>
                                 </div>
                         </div>
+
                         <div id="ms-Alumni" class="sub-tab-content">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Naresh.png" alt="Naresh Chandora" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                                                <img src="people\Naresh.png" alt="Team Member" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Naresh Chandora</h3>
                                                 <p class="text-gray-600">MS (Graduated 2024)</p>
+                                                <p class="text-gray-600">Last known : Airbus - CFD Analysis (ZEROe future aircraft) </p>
                                                 <div class="mt-4 flex justify-center space-x-6">
-                                                        <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
-                                                        <a href="#" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
                                                         <a href="https://www.linkedin.com/in/naresh-chandora-040093115/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                </div>
+                                        </div>
+                                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                                <img src="people\Amith.png" alt="Amith MS Team Member" class="rounded-full mx-auto mb-4">
+                                                <h3 class="text-xl font-semibold text-gray-900">Amit Kumar Goswami</h3>
+                                                <p class="text-gray-600">MS (Thesis Defended 2025)</p>
+                                                <p class="text-gray-600">Last known : ACL Digital </p>
+                                                <div class="mt-4 flex justify-center space-x-6">
+                                                        <a href="https://www.linkedin.com/in/amit-kumar-goswami-6533aa244/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                                 </div>
                                         </div>
                                 </div>
                         </div>
+
                         <div id="mtech-Alumni" class="sub-tab-content">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Priyanshu Misra.png" alt="Priyanshu Misra" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
-                                                <a href="https://www.linkedin.com/in/priyanshu-misra-3837831a8/" target="_blank">
-                                                        <h3 class="text-xl font-semibold text-gray-900">Priyanshu Misra</h3>
-                                                </a>
+                                                <img src="people\Priyanshu Misra.png" alt="Priyanshu - Team Member" class="w-28 h-28 rounded-full mx-auto mb-4">
+                                                <h3 class="text-xl font-semibold text-gray-900">Priyanshu Misra</h3>
                                                 <p class="text-gray-600">M.Tech (Graduated 2024)</p>
+                                                <div class="mt-4 flex justify-center space-x-6">
+                                                        <a href="https://www.linkedin.com/in/priyanshu-misra-3837831a8/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+
+                        <div id="PDF-Alumni" class="sub-tab-content">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                                <img src="people\Dr Siva.png" alt="Dr. Siva Kumar Reddy - PDF Team" class="rounded-full mx-auto mb-4">                                        
+                                                <h3 class="text-xl font-semibold text-gray-900">Dr. Siva Kumar Reddy Y.</h3>
+                                                <p class="text-gray-600">Last known : Post Doctoral Researcher at University of Cincinnati, USA</p>
+                                                <div class="mt-4 flex justify-center space-x-6">
+                                                        <a href="https://scholar.google.com/citations?user=rx3aL6sAAAAJ&hl=en" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
+                                                        <a href="https://www.researchgate.net/profile/Y-Siva-Reddy" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
+                                                        <a href="https://www.linkedin.com/in/y-siva-kumar-reddy-63616ba/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                </div>
+                                        </div>
+                                        <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                                                <img src="people\Dr Abish.png" alt="Dr. Abishraj VR - PDF Team" class="rounded-full mx-auto mb-4">                                        
+                                                <h3 class="text-xl font-semibold text-gray-900">Dr. Abishraj V.R.</h3>
+                                                <p class="text-gray-600">Last known : Propulsion Engineerm, AgniKul Cosmos</p>
+                                                <div class="mt-4 flex justify-center space-x-6">
+                                                        <a href="https://scholar.google.com/citations?user=aI4L_t8AAAAJ&hl=en" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
+                                                        <a href="https://www.researchgate.net/profile/Abishraj-Vr" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
+                                                        <a href="https://www.linkedin.com/in/abishraj-vr-345a416b/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                </div>
                                         </div>
                                 </div>
                         </div>
                 </div>
-               
+                
             </div>
         </div>
     </section>
+
     <!-- News & Media Section -->
     <section id="news" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1056,6 +1145,7 @@
             </div>
         </div>
     </section>
+
     <!-- Join Us -->
     <section id="career" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1090,6 +1180,7 @@
                 </div>
         </div>
     </section>
+
     <!-- Contact Section -->
     <section id="contact" class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1126,15 +1217,15 @@
             </div>
         </div>
     </div>
-   
+    
     <!-- Google Map -->
     <div class="contact-map">
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100!2d80.2274318!3d12.9910923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52673043960081%3A0xd18bd9bbda35314e!2sNew%20Academic%20Complex%202%20-%20NAC2%20block!5e0!3m2!1sen!2sus!4v1698800000001!5m2!1sen!2sus"
-            width="150%"
-            height="400"
-            style="border:0; border-radius: 0.75rem;"
-            allowfullscreen=""
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100!2d80.2274318!3d12.9910923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52673043960081%3A0xd18bd9bbda35314e!2sNew%20Academic%20Complex%202%20-%20NAC2%20block!5e0!3m2!1sen!2sus!4v1698800000001!5m2!1sen!2sus" 
+            width="150%" 
+            height="400" 
+            style="border:0; border-radius: 0.75rem;" 
+            allowfullscreen="" 
             loading="lazy">
         </iframe>
     </div>
@@ -1142,6 +1233,7 @@
             </div>
         </div>
     </section>
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1155,6 +1247,7 @@
             </div>
         </div>
     </footer>
+
     <script>
         // Mobile menu toggle
         const menuToggle = document.getElementById('menu-toggle');
@@ -1162,6 +1255,7 @@
         menuToggle.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+
         // Fade-in animations on scroll
         const fadeIns = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {
@@ -1171,7 +1265,9 @@
                 }
             });
         }, { threshold: 0.2 });
+
         fadeIns.forEach(element => observer.observe(element));
+
         // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1182,9 +1278,11 @@
                 mobileMenu.classList.add('hidden');
             });
         });
+
         // Tab functionality for main tabs
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
+
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const section = tab.closest('section');
@@ -1193,20 +1291,21 @@
                 tab.classList.add('active');
                 const activeContent = section.querySelector(`#${tab.dataset.tab}`);
                 activeContent.classList.add('active');
+
                 // Activate default sub-tab within the active tab-content
                 const defaultSubTab = activeContent.querySelector('.sub-tab.active');
-                const defaultSubContentId = defaultSubTab ? defaultSubTab.dataset.subTab : activeContent.querySelector('.sub-tab')?.dataset.subTab;
-                if (defaultSubContentId) {
-                    activeContent.querySelectorAll('.sub-tab').forEach(st => st.classList.remove('active'));
-                    activeContent.querySelectorAll('.sub-tab-content').forEach(sc => sc.classList.remove('active'));
-                    activeContent.querySelector(`[data-sub-tab="${defaultSubContentId}"]`).classList.add('active');
-                    activeContent.querySelector(`#${defaultSubContentId}`).classList.add('active');
-                }
+                const defaultSubContentId = defaultSubTab ? defaultSubTab.dataset.subTab : activeContent.querySelector('.sub-tab').dataset.subTab;
+                activeContent.querySelectorAll('.sub-tab').forEach(st => st.classList.remove('active'));
+                activeContent.querySelectorAll('.sub-tab-content').forEach(sc => sc.classList.remove('active'));
+                activeContent.querySelector(`[data-sub-tab="${defaultSubContentId}"]`).classList.add('active');
+                activeContent.querySelector(`#${defaultSubContentId}`).classList.add('active');
             });
         });
+
         // Sub-tab functionality for all sub-tabs (including nested)
         const subTabs = document.querySelectorAll('.sub-tab');
         const subTabContents = document.querySelectorAll('.sub-tab-content');
+
         subTabs.forEach(subTab => {
             subTab.addEventListener('click', () => {
                 const parent = subTab.closest('.sub-tab-content') || subTab.closest('.tab-content');
@@ -1221,11 +1320,13 @@
                 }
             });
         });
+
         // Hero carousel functionality
         const carouselInner = document.querySelector('.carousel-inner');
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.carousel-dot');
         let currentSlide = 0;
+
         function showSlide(index) {
             if (index >= slides.length) {
                 index = 0;
@@ -1235,6 +1336,7 @@
             carouselInner.style.transform = `translateX(-${index * 100}%)`;
             dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
             currentSlide = index;
+
             // Update image sources if placeholders are present
             slides.forEach((slide, i) => {
                 const img = slide.querySelector('img');
@@ -1243,10 +1345,13 @@
                 }
             });
         }
+
         function nextSlide() {
             showSlide(currentSlide + 1);
         }
+
         let autoSlide = setInterval(nextSlide, 5000);
+
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
                 clearInterval(autoSlide);
@@ -1254,11 +1359,13 @@
                 autoSlide = setInterval(nextSlide, 5000);
             });
         });
+
         // Media carousel functionality
         const mediaCarouselInner = document.querySelector('.media-carousel-inner');
         const mediaSlides = document.querySelectorAll('.media-slide');
         const mediaDots = document.querySelectorAll('.media-dot');
         let currentMediaSlide = 0;
+
         function showMediaSlide(index) {
             if (index >= mediaSlides.length) {
                 index = 0;
@@ -1271,13 +1378,17 @@
             mediaDots.forEach((dot, i) => dot.classList.toggle('active', i === index));
             currentMediaSlide = index;
         }
+
         function nextMediaSlide() {
             showMediaSlide(currentMediaSlide + 1);
         }
+
         function prevMediaSlide() {
             showMediaSlide(currentMediaSlide - 1);
         }
+
         let autoMediaSlide = setInterval(nextMediaSlide, 5000);
+
         mediaDots.forEach(dot => {
             dot.addEventListener('click', () => {
                 clearInterval(autoMediaSlide);
@@ -1285,6 +1396,7 @@
                 autoMediaSlide = setInterval(nextMediaSlide, 5000);
             });
         });
+
         // Arrow button functionality
         document.querySelectorAll('.media-arrow').forEach(arrow => {
             arrow.addEventListener('click', () => {
@@ -1292,10 +1404,12 @@
                 autoMediaSlide = setInterval(nextMediaSlide, 5000);
             });
         });
+
         // Update carousel on window resize
         window.addEventListener('resize', () => {
             showMediaSlide(currentMediaSlide);
         });
+
         // Journal search functionality
         const journalSearch = document.getElementById('journal-search');
         const journalItems = document.querySelectorAll('#journal-list .publication-item');
@@ -1308,6 +1422,7 @@
                 });
             });
         }
+
         // Conference search functionality
         const conferenceSearch = document.getElementById('conference-search');
         const conferenceItems = document.querySelectorAll('#conference-list .publication-item');
