@@ -329,6 +329,49 @@
         .dark footer {
             @apply bg-gray-800;
         }
+        .dark .media-arrow {
+            background: rgba(59, 130, 246, 0.8);
+            color: white;
+        }
+        .dark .media-arrow:hover {
+            background: rgba(59, 130, 246, 1);
+        }
+        .dark .btn-primary {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+        .dark .btn-primary:hover {
+            background: linear-gradient(to right, #3b82f6, #1e3a8a);
+        }
+        .dark .tab.active {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+            color: white;
+        }
+        .dark .sub-tab.active {
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+            color: white;
+        }
+        .dark input {
+            @apply bg-gray-800 border-gray-600 text-gray-100;
+        }
+        .dark input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .dark .nav-link::after {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+        .dark .hero-overlay {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+        }
+        .dark .contact-map iframe {
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+        .dark .contact-info svg {
+            color: #ec4899; /* pink-500 */
+        }
+        .dark .contact-info a:hover {
+            color: #3b82f6;
+        }
     </style>
 </head>
 <body>
@@ -384,7 +427,7 @@
                 <a href="#publications" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Publications</a>
                 <a href="#team" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Team</a>
                 <a href="#news" class="block text-gray-800 hover:text-blue-900 px-3 py-2">News & Media</a>
-                <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>
+                <a href="#career" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Career</a>
                 <a href="#contact" class="block text-gray-800 hover:text-blue-900 px-3 py-2">Contact</a>
             </div>
         </div>
