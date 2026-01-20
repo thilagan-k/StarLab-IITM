@@ -6,7 +6,7 @@
     <title>STARS Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
+<style>
         body {
             font-family: 'Roboto', sans-serif;
             @apply bg-gray-50;
@@ -117,16 +117,20 @@
         .carousel-inner {
             display: flex;
             flex-wrap: wrap;
+            gap: 0;
+            margin: 0;
+            padding: 0;
         }
         .carousel-slide {
-            flex: 0 0 33.33%;
+            flex: 0 0 calc(100% / 3);
             height: 500px;
-            background-size: cover;
             background-position: center;
             position: relative;
             opacity: 0;
             transform: translateX(auto);
             animation: slideIn 2s ease-out forwards;
+            margin: 0;
+            padding: 0;
         }
         @keyframes slideIn {
             to {
@@ -149,7 +153,7 @@
         }
         @media (max-width: 768px) {
             .carousel-slide {
-                flex: 0 0 50%;
+                flex: 0 0 calc(100% / 2);
             }
         }
         @media (max-width: 480px) {
@@ -316,7 +320,7 @@
         <div class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-150% object-cover" src="header_img/Video/Stars.mp4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/Stars.mp4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide relative">
                     <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/Grok-Video-2.MP4" autoplay loop muted playsinline></video>
