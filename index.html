@@ -6,7 +6,7 @@
     <title>STARS Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
+    <style>
         body {
             font-family: 'Roboto', sans-serif;
             @apply bg-gray-50;
@@ -140,7 +140,7 @@
         }
         .carousel-slide img,
         .carousel-slide video {
-            width: auto;
+            width: 100%;
             height: auto;
             object-fit: contain; /* Changed to contain to avoid cropping/losing content */
             position: absolute;
@@ -320,22 +320,22 @@
         <div class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/Stars.mp4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full h-auto object-contain" src="header_img/Video/Stars.mp4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/Grok-Video-2.MP4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full h-auto object-contain" src="header_img/Video/Grok-Video-2.MP4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/Grok-Video-3.MP4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full h-auto object-contain" src="header_img/Video/Grok-Video-3.MP4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/Idea-to-prrototype.mp4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full h-auto object-contain" src="header_img/Video/Idea-to-prrototype.mp4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/GC.mp4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full h-auto object-contain" src="header_img/Video/GC.mp4" autoplay loop muted playsinline></video>
                 </div>
                 <div class="carousel-slide relative">
-                    <video class="absolute top-0 left-0 w-full object-cover" src="header_img/Video/IITM.mp4" autoplay loop muted playsinline></video>
+                    <video class="absolute top-0 left-0 w-full h-auto object-contain" src="header_img/Video/IITM.mp4" autoplay loop muted playsinline></video>
                 </div>
             </div>
             <div class="absolute inset-0 hero-overlay"></div>
@@ -1351,6 +1351,16 @@
                 });
             });
         }
+        // Dynamic aspect ratio for videos
+        document.addEventListener('DOMContentLoaded', () => {
+            const videos = document.querySelectorAll('.carousel-slide video');
+            videos.forEach(video => {
+                video.addEventListener('loadedmetadata', () => {
+                    const slide = video.parentElement;
+                    slide.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+                });
+            });
+        });
     </script>
 </body>
 </html>
