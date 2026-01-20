@@ -276,7 +276,6 @@
             width: 20px;
             height: 20px;
         }
-
         /* Dark Mode Overrides */
         .dark body {
             @apply bg-gray-900 text-gray-100;
@@ -371,6 +370,13 @@
         }
         .dark .contact-info a:hover {
             color: #3b82f6;
+        }
+        /* Night mode color inversion */
+        .dark {
+            filter: invert(1) hue-rotate(180deg);
+        }
+        .dark img, .dark video, .dark iframe, .dark embed, .dark object {
+            filter: invert(1) hue-rotate(180deg);
         }
     </style>
 </head>
@@ -554,7 +560,7 @@
                                         </div>
                                 </div>
                         </div>
-                     
+                    
                         <div id="STMS" class="tab-content">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -605,7 +611,7 @@
                         </div>
             </div>
     </section>
-                     
+                    
     <!-- Publications Section -->
     <section id="publications" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -917,7 +923,7 @@
                                  <!-- New PhD End-->
                             </div>
                     </div>
-                     
+                    
                     <div id="ms" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -938,7 +944,7 @@
                                 </div>
                             </div>
                     </div>
-                     
+                    
                     <div id="mtech" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -970,12 +976,12 @@
                                         <h3 class="text-xl font-semibold text-gray-900">Artika Bansal</h3>
                                     <p class="text-gray-600">M.Tech [2027]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
-                                                <a href="https://www.linkedin.com/in/artika-bansal-63b2a02aa/?originalSubdomain=in" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
+                                                <a href="https://www.linkedin.com/in/artika-bansal-63b5a02aa/?originalSubdomain=in" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                     
+                    
                     </div>
                 </div>
                 <div id="PDF" class="tab-content">
@@ -1006,7 +1012,7 @@
                                 </div>
                         </div>
                 </div>
-             
+            
                 <div id="staff" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -1029,7 +1035,7 @@
                             <h3 class="text-xl font-semibold text-gray-900">Antro Jagatheesh</h3>
                             <p class="text-gray-600">Senior Technician</p>
                         </div>
-                         
+                        
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
                             <img src="people\Lakshmi_1.jpeg" alt="Lakshmi - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Lakshmi</h3>
@@ -1044,7 +1050,7 @@
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-Alumni">M.Tech</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF-Alumni">Post Doc</button>
                     </div>
-                     
+                    
                         <div id="phd-Alumni" class="sub-tab-content active">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -1147,7 +1153,7 @@
                                 </div>
                         </div>
                 </div>
-             
+            
             </div>
         </div>
     </section>
@@ -1295,7 +1301,6 @@
             </div>
         </div>
     </div>
- 
     <!-- Google Map -->
     <div class="contact-map">
         <iframe
