@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STARS Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -271,6 +276,56 @@
             width: 20px;
             height: 20px;
         }
+
+        /* Dark Mode Overrides */
+        .dark body {
+            @apply bg-gray-900 text-gray-100;
+        }
+        .dark nav {
+            @apply bg-gray-800;
+        }
+        .dark .nav-link {
+            @apply text-gray-200 hover:text-blue-300;
+        }
+        .dark .bg-white {
+            @apply bg-gray-800;
+        }
+        .dark .bg-gray-50 {
+            @apply bg-gray-700;
+        }
+        .dark .text-gray-900 {
+            @apply text-white;
+        }
+        .dark .text-gray-800 {
+            @apply text-gray-200;
+        }
+        .dark .text-gray-600 {
+            @apply text-gray-400;
+        }
+        .dark .publication-item:hover {
+            background-color: #1f2937; /* dark hover bg */
+        }
+        .dark #mobile-menu {
+            @apply bg-gray-800;
+        }
+        .dark .card {
+            @apply shadow-gray-900;
+        }
+        .dark .tab {
+            @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+        }
+        .dark .sub-tab {
+            @apply bg-gray-600 text-gray-200 hover:bg-gray-500;
+        }
+        .dark .media-card {
+            @apply bg-gray-800 border-gray-700;
+        }
+        .dark .media-dot {
+            background: #60a5fa;
+        }
+        .dark footer {
+            @apply bg-gray-800;
+        }
     </style>
 </head>
 <body>
@@ -292,10 +347,22 @@
                     <a href="#career" class="nav-link text-gray-800 hover:text-blue-900">Career</a>
                     <a href="#contact" class="nav-link text-gray-800 hover:text-blue-900">Contact</a>
                 </div>
-                <div class="md:hidden flex items-center">
-                    <button id="menu-toggle" class="text-gray-800 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                <div class="flex items-center space-x-4">
+                    <div class="md:hidden flex items-center">
+                        <button id="menu-toggle" class="text-gray-800 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <button id="day-mode" class="text-gray-800 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </button>
+                    <button id="night-mode" class="text-gray-800 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
                     </button>
                 </div>
@@ -437,7 +504,7 @@
                                         </div>
                                 </div>
                         </div>
-                      
+                     
                         <div id="STMS" class="tab-content">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -488,7 +555,7 @@
                         </div>
             </div>
     </section>
-                      
+                     
     <!-- Publications Section -->
     <section id="publications" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -695,7 +762,7 @@
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
                                 <img src="images_J_C\conference\FMFP2023.JPG" alt="FMFP2023.JPG Cover" class="publication-cover">
                                 <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Falling Film Thickness Measurement on Inclined Plates with and Without Surface Modification</h3>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Falling Film Thickness Measurement on Inclined Plates with and without Surface Modification</h3>
                                     <p class="text-gray-600">Naresh Khimaram Chandora, Advaith S., Mani. A. <em>10th International and 50th National Conference on Fluid Mechanics and Fluid Power, 20-22 December 2023, IIT Jodhpur, India</em>. <a href="https://link.springer.com/chapter/10.1007/978-981-97-6776-2_13" style="color: blue;" target="_blank">Read article</a></p>
                                 </div>
                             </div>
@@ -800,7 +867,7 @@
                                  <!-- New PhD End-->
                             </div>
                     </div>
-                      
+                     
                     <div id="ms" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -821,7 +888,7 @@
                                 </div>
                             </div>
                     </div>
-                      
+                     
                     <div id="mtech" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -858,7 +925,7 @@
                                 </div>
                             </div>
                         </div>
-                      
+                     
                     </div>
                 </div>
                 <div id="PDF" class="tab-content">
@@ -889,7 +956,7 @@
                                 </div>
                         </div>
                 </div>
-              
+             
                 <div id="staff" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -912,7 +979,7 @@
                             <h3 class="text-xl font-semibold text-gray-900">Antro Jagatheesh</h3>
                             <p class="text-gray-600">Senior Technician</p>
                         </div>
-                          
+                         
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
                             <img src="people\Lakshmi_1.jpeg" alt="Lakshmi - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Lakshmi</h3>
@@ -927,7 +994,7 @@
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-Alumni">M.Tech</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF-Alumni">Post Doc</button>
                     </div>
-                      
+                     
                         <div id="phd-Alumni" class="sub-tab-content active">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -978,7 +1045,7 @@
                                                 </div>
                                         </div>
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people/Jampa Rokesh Vara Prasad.jpeg" alt="Rokrdh - Team Member" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Jampa Rokesh Vara Prasad.jpeg" alt="Rokesh - Team Member" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Jampa Rokesh Vara Prasad</h3>
                                                 <p class="text-gray-600">M.Tech (Graduated 2025)</p>
                                                 <div class="mt-4 flex justify-center space-x-6">
@@ -1030,7 +1097,7 @@
                                 </div>
                         </div>
                 </div>
-              
+             
             </div>
         </div>
     </section>
@@ -1178,7 +1245,7 @@
             </div>
         </div>
     </div>
-  
+ 
     <!-- Google Map -->
     <div class="contact-map">
         <iframe
@@ -1354,6 +1421,24 @@
                 });
             });
         });
+        // Day and Night Mode Toggle
+        const dayButton = document.getElementById('day-mode');
+        const nightButton = document.getElementById('night-mode');
+        const html = document.documentElement;
+        dayButton.addEventListener('click', () => {
+            html.classList.remove('dark');
+            localStorage.theme = 'light';
+        });
+        nightButton.addEventListener('click', () => {
+            html.classList.add('dark');
+            localStorage.theme = 'dark';
+        });
+        // On page load or when changing themes, best to set the theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
     </script>
 </body>
 </html>
