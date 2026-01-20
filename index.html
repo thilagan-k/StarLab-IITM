@@ -302,6 +302,9 @@
         .dark .text-gray-600 {
             @apply text-gray-400;
         }
+        .dark .text-blue-900 {
+            @apply text-blue-300;
+        }
         .dark .publication-item:hover {
             background-color: #1f2937; /* dark hover bg */
         }
@@ -335,10 +338,10 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <img src="header_img\STARS_LAB-IITM.png" alt="STARS_LAB-IIT Madras Logo" class="h-10 mr-2">
-                    <h1 class="text-2xl font-semibold text-blue-900">STAR Lab - IIT Madras <h1>
+                    <h1 class="text-2xl font-semibold text-blue-900">STAR Lab - IIT Madras</h1>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link text-gray-800 hovsmarer:text-blue-900">Home</a>
+                    <a href="#home" class="nav-link text-gray-800 hover:text-blue-900">Home</a>
                     <a href="#about" class="nav-link text-gray-800 hover:text-blue-900">About</a>
                     <a href="#projects" class="nav-link text-gray-800 hover:text-blue-900">Projects</a>
                     <a href="#publications" class="nav-link text-gray-800 hover:text-blue-900">Publications</a>
@@ -355,16 +358,20 @@
                             </svg>
                         </button>
                     </div>
-                    <button id="day-mode" class="text-gray-800 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                    </button>
-                    <button id="night-mode" class="text-gray-800 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    </button>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="theme-toggle" class="sr-only peer">
+                        <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        <span class="absolute left-1 top-1 text-yellow-400 peer-checked:text-transparent">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </span>
+                        <span class="absolute right-1 top-1 text-gray-300 peer-checked:text-white">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        </span>
+                    </label>
                 </div>
             </div>
         </div>
@@ -1422,22 +1429,24 @@
             });
         });
         // Day and Night Mode Toggle
-        const dayButton = document.getElementById('day-mode');
-        const nightButton = document.getElementById('night-mode');
+        const toggle = document.getElementById('theme-toggle');
         const html = document.documentElement;
-        dayButton.addEventListener('click', () => {
-            html.classList.remove('dark');
-            localStorage.theme = 'light';
-        });
-        nightButton.addEventListener('click', () => {
-            html.classList.add('dark');
-            localStorage.theme = 'dark';
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+            } else {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+            }
         });
         // On page load or when changing themes, best to set the theme
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             html.classList.add('dark');
+            toggle.checked = true;
         } else {
             html.classList.remove('dark');
+            toggle.checked = false;
         }
     </script>
 </body>
