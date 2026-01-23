@@ -374,13 +374,11 @@
         .dark img, .dark video, .dark iframe, .dark embed, .dark object {
             filter: invert(1) hue-rotate(180deg);
         }
-
         /* New: Custom text selection highlight for light mode */
         ::selection {
             background: #3b82f6; /* Soft blue background */
             color: white; /* White text for contrast */
         }
-
         /* New: Custom text selection highlight for dark mode (overrides invert filter effects) */
         .dark ::selection {
             background: #60a5fa; /* Lighter blue for dark mode visibility */
@@ -1496,13 +1494,26 @@
                 localStorage.theme = 'light';
             }
         });
-        // On page load or when changing themes, best to set the theme
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // On page load, set the theme based on localStorage, or time-based default if not set
+        if (localStorage.theme === 'dark') {
             html.classList.add('dark');
             toggle.checked = true;
-        } else {
+        } else if (localStorage.theme === 'light') {
             html.classList.remove('dark');
             toggle.checked = false;
+        } else {
+            // No stored preference, use time-based default
+            const currentHour = new Date().getHours();
+            const isNight = currentHour < 7 || currentHour >= 19;
+            if (isNight) {
+                html.classList.add('dark');
+                toggle.checked = true;
+                localStorage.theme = 'dark'; // Optionally store it
+            } else {
+                html.classList.remove('dark');
+                toggle.checked = false;
+                localStorage.theme = 'light'; // Optionally store it
+            }
         }
     </script>
 </body>
