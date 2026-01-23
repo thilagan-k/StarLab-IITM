@@ -374,6 +374,18 @@
         .dark img, .dark video, .dark iframe, .dark embed, .dark object {
             filter: invert(1) hue-rotate(180deg);
         }
+
+        /* New: Custom text selection highlight for light mode */
+        ::selection {
+            background: #3b82f6; /* Soft blue background */
+            color: white; /* White text for contrast */
+        }
+
+        /* New: Custom text selection highlight for dark mode (overrides invert filter effects) */
+        .dark ::selection {
+            background: #60a5fa; /* Lighter blue for dark mode visibility */
+            color: #1f2937; /* Dark gray text for smooth contrast */
+        }
     </style>
 </head>
 <body>
@@ -556,7 +568,7 @@
                                         </div>
                                 </div>
                         </div>
-                    
+                   
                         <div id="STMS" class="tab-content">
                                 <!-- Sub-Tabs -->
                                 <div class="flex justify-center space-x-4 mb-8">
@@ -583,7 +595,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\SMART-EV.JPG" alt="SMART-EV Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects\SMART-EV.png" alt="SMART-EV Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Prime Minister's Early Career Research Grant</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Hybrid & Safe-Modular-Adaptive-Robust-Thermal (SMART) management system for Electric Vehicle Batteries </p>
@@ -607,7 +619,7 @@
                         </div>
             </div>
     </section>
-                    
+                   
     <!-- Publications Section -->
     <section id="publications" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -862,7 +874,7 @@
                             <h3 class="text-xl font-semibold text-gray-900">Dr. Advaith Sankar</h3>
                             <p class="text-gray-600">Assistant Professor</p>
                                 <div class="mt-4 flex justify-center space-x-6">
-                                    <a href="https://mech.iitm.ac.in/profile.php?fname=advaith" class="hover:text-blue-400 transition"> <img src="logo/IIT_Madras_Logo.jpg"> </a>    
+                                    <a href="https://mech.iitm.ac.in/profile.php?fname=advaith" class="hover:text-blue-400 transition"> <img src="logo/IIT_Madras_Logo.jpg"> </a>
                                     <a href="https://scholar.google.com/citations?user=HUUzcSUAAAAJ&hl=en&oi=ao" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png"> </a>
                                     <a href="https://www.researchgate.net/profile/Advaith-S" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/RG_logo.jpg"> </a>
                                     <a href="https://www.linkedin.com/in/advaithsankar/" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/LinkedIn_logo.png"> </a>
@@ -920,7 +932,7 @@
                                  <!-- New PhD End-->
                             </div>
                     </div>
-                    
+                   
                     <div id="ms" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -941,7 +953,7 @@
                                 </div>
                             </div>
                     </div>
-                    
+                   
                     <div id="mtech" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -978,7 +990,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+                   
                     </div>
                 </div>
                 <div id="PDF" class="tab-content">
@@ -1009,7 +1021,7 @@
                                 </div>
                         </div>
                 </div>
-            
+           
                 <div id="staff" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -1032,7 +1044,7 @@
                             <h3 class="text-xl font-semibold text-gray-900">Antro Jagatheesh</h3>
                             <p class="text-gray-600">Senior Technician</p>
                         </div>
-                        
+                       
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
                             <img src="people\Lakshmi_1.jpeg" alt="Lakshmi - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Lakshmi</h3>
@@ -1047,7 +1059,7 @@
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="mtech-Alumni">M.Tech</button>
                         <button class="sub-tab px-6 py-2 rounded-md font-medium text-gray-800 bg-gray-200 hover:bg-gray-300" data-sub-tab="PDF-Alumni">Post Doc</button>
                     </div>
-                    
+                   
                         <div id="phd-Alumni" class="sub-tab-content active">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
@@ -1150,7 +1162,7 @@
                                 </div>
                         </div>
                 </div>
-            
+           
             </div>
         </div>
     </section>
