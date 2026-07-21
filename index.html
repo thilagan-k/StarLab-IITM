@@ -420,6 +420,99 @@
         #conference-list::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        /* Latest Updates / News Flash Banner */
+        .news-flash {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #1e3a8a);
+            background-size: 200% 100%;
+            animation: gradient-shift 4s ease infinite, flash-pulse 2s ease-in-out infinite;
+            color: white;
+            overflow: hidden;
+            position: relative;
+            z-index: 40;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes flash-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+        .news-flash-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.6rem 2.5rem 0.6rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            position: relative;
+        }
+        .news-flash .badge-new {
+            background: #fbbf24;
+            color: #1e3a8a;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            animation: badge-bounce 1.5s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes badge-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .news-flash a {
+            color: #bfdbfe;
+            text-decoration: underline;
+            white-space: nowrap;
+        }
+        .news-flash a:hover {
+            color: white;
+        }
+        .news-flash-close {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .news-flash-close:hover {
+            background: rgba(255,255,255,0.35);
+        }
+        .dark .news-flash {
+            filter: invert(1) hue-rotate(180deg); /* counteract the global dark invert so banner stays vibrant */
+        }
+        .news-flash.hidden {
+            display: none;
+        }
+        /* NEW badge for publications */
+        .badge-new-pub {
+            display: inline-block;
+            background: linear-gradient(to right, #ef4444, #f97316);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            animation: flash-pulse 1.5s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -483,6 +576,15 @@
             </div>
         </div>
     </nav>
+    <!-- Latest Updates Flash Banner -->
+    <div id="news-flash" class="news-flash">
+        <div class="news-flash-inner">
+            <span class="badge-new">NEW</span>
+            <span>Latest: Compact Desalination paper in <em>Energy</em> (2026) · Greywater Patent (IP 202641045609) · New PhD Scholar Suparna Dhara</span>
+            <a href="#publications">View Publications →</a>
+            <button class="news-flash-close" id="news-flash-close" aria-label="Dismiss">&times;</button>
+        </div>
+    </div>
     <!-- Hero Section with Animated Rolling Images into Grid -->
     <section id="home" class="relative min-h-screen">
         <div class="carousel">
@@ -513,7 +615,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in">
                 <div class="text-center">
-                    <img src="people\Dr Advaith.JPG" alt="Dr. Advaith" class="w-full h-auto rounded-lg shadow-md object-cover mb-4">
+                    <img src="people/Dr Advaith.JPG" alt="Dr. Advaith" class="w-full h-auto rounded-lg shadow-md object-cover mb-4">
                     <div class="flex justify-center space-x-6 mb-4">
                         <a href="https://mech.iitm.ac.in/profile.php?fname=advaith" class="hover:text-blue-400 transition"> <img src="logo/IIT_Madras_Logo.png" class="w-6 h-6"> </a>
                         <a href="https://scholar.google.com/citations?user=HUUzcSUAAAAJ&hl=en&oi=ao" class="hover:text-blue-400 transition" target="_blank"> <img src="logo/Google_Scholar_logo.png" class="w-6 h-6"> </a>
@@ -553,7 +655,7 @@
                                  <div id="ALL-going" class="sub-tab-content active">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\LTGWT.JPG" alt="LTGWT Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/LTGWT.JPG" alt="LTGWT Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Socially Relevant & Innovation Project (SRIP)</h3>
                                                                 <p class="text-gray-600"> <strong> Title: </strong> Low-temperature grey water treatment system for household and residential community </p>
@@ -561,7 +663,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\INDEE3.png" alt="INDEE3 Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/INDEE3.png" alt="INDEE3 Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">INDEE3: an Indo-Norwegian Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Sustainable cooling and heating in India</p>
@@ -570,7 +672,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\PCM_CS.JPG" alt="PCM_CS Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/PCM_CS.JPG" alt="PCM_CS Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Research Based Consultancy Project with Industry</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Development of renewable energy driven cold storage with PCM-based thermal energy backup for agricultural produce preservation</p>
@@ -578,7 +680,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\Hybrid PCM.png" alt="Hybrid PCM Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/Hybrid PCM.png" alt="Hybrid PCM Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">IITM-Virginia Tech Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Experimental Analysis of Hybrid PCM - Liquid Cooling System EV Battery Thermal Management</p>
@@ -586,7 +688,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\Sensor integrated AI Systems.png" alt="Sensor integrated AI Systems Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/Sensor integrated AI Systems.png" alt="Sensor integrated AI Systems Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3"> IMPACT 3.0: Innovation to Market Product Acceleration Program</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Sensor integrated AI Systems for Optimal Monitoring and Control of Energy Assets</p>
@@ -594,7 +696,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\ISRO-IITM_ML.JPG" alt="ISRO-IITM_ML Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/ISRO-IITM_ML.JPG" alt="ISRO-IITM_ML Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">ISRO-IITM Space Technology Cell Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Machine learning aided early failure detection for preventive maintenance of thermo-vacuum chambers</p>
@@ -602,7 +704,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">New Faculty Seed Grant Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Real-Time Thermal Management and Data-Driven Alternate Ventilation Strategy for Energy-Efficient Building Design</p>
@@ -610,7 +712,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\SMART-EV.png" alt="SMART-EV Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/SMART-EV.png" alt="SMART-EV Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Prime Minister's Early Career Research Grant</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Hybrid & Safe-Modular-Adaptive-Robust-Thermal (SMART) management system for Electric Vehicle Batteries </p>
@@ -622,7 +724,7 @@
                                 <div id="ALL-done" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Indo-UK Joint Faculty Bilateral Mobility Project (JFMBP)</h3>
                                                                 <p class="text-gray-600"><strong> Title: </strong> Optimizing Building Performance with Smart Glazing: A Multi-Aspect Analysis for Energy Efficiency and Renewable Integration. </p>
@@ -630,7 +732,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\EDU-COOL.JPG" alt="EDU-COOL Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/EDU-COOL.JPG" alt="EDU-COOL Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Edu-Cool: an Indo-Norwegian Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Educational Program for Sustainable Heating and Cooling Solutions for India</p>
@@ -639,7 +741,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\FRI_INDEE+.png" alt="INDEE+ Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/FRI_INDEE+.png" alt="INDEE+ Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">INDEE+: Future Refrigeration India </h3>
                                                                 <p class="text-gray-600"> An Indo-Norwegian Project</p>
@@ -648,7 +750,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\IoE-CoE-II.JPG" alt="IoE-CoE-II Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/IoE-CoE-II.JPG" alt="IoE-CoE-II Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Institute of Eminence - Centre of Excellence Research Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Domestic Compact Solar Desalination and Cold Storage Systems</p>
@@ -656,7 +758,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\ECTCS-AEV.JPG" alt="ECTCS-AEV Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/ECTCS-AEV.JPG" alt="ECTCS-AEV Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Industrial Consultancy Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Energy Consumption and Thermal Comfort Studies for Autonomous and Electric Vehicles</p>
@@ -678,7 +780,7 @@
                                 <div id="TRER-going" class="sub-tab-content active">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\LTGWT.JPG" alt="LTGWT Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/LTGWT.JPG" alt="LTGWT Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Socially Relevant & Innovation Project (SRIP)</h3>
                                                                 <p class="text-gray-600"> <strong> Title: </strong> Low-temperature grey water treatment system for household and residential community </p>
@@ -686,7 +788,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\INDEE3.png" alt="INDEE3 Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/INDEE3.png" alt="INDEE3 Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">INDEE3: an Indo-Norwegian Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Sustainable cooling and heating in India</p>
@@ -695,7 +797,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\PCM_CS.JPG" alt="PCM_CS Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/PCM_CS.JPG" alt="PCM_CS Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Research Based Consultancy Project with Industry</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Development of renewable energy driven cold storage with PCM-based thermal energy backup for agricultural produce preservation</p>
@@ -707,7 +809,7 @@
                                 <div id="TRER-done" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/JFMBP.JPG" alt="JFMBP Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Indo-UK Joint Faculty Bilateral Mobility Project (JFMBP)</h3>
                                                                 <p class="text-gray-600"><strong> Title: </strong> Optimizing Building Performance with Smart Glazing: A Multi-Aspect Analysis for Energy Efficiency and Renewable Integration. </p>
@@ -715,7 +817,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\EDU-COOL.JPG" alt="EDU-COOL Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/EDU-COOL.JPG" alt="EDU-COOL Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Edu-Cool: an Indo-Norwegian Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Educational Program for Sustainable Heating and Cooling Solutions for India</p>
@@ -724,7 +826,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\FRI_INDEE+.png" alt="INDEE+ Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/FRI_INDEE+.png" alt="INDEE+ Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">INDEE+: Future Refrigeration India </h3>
                                                                 <p class="text-gray-600"> An Indo-Norwegian Project</p>
@@ -733,7 +835,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\IoE-CoE-II.JPG" alt="IoE-CoE-II Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/IoE-CoE-II.JPG" alt="IoE-CoE-II Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Institute of Eminence - Centre of Excellence Research Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Domestic Compact Solar Desalination and Cold Storage Systems</p>
@@ -754,7 +856,7 @@
                                 <div id="STMS-going" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\Hybrid PCM.png" alt="Hybrid PCM Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/Hybrid PCM.png" alt="Hybrid PCM Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">IITM-Virginia Tech Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Experimental Analysis of Hybrid PCM - Liquid Cooling System EV Battery Thermal Management</p>
@@ -762,7 +864,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\Sensor integrated AI Systems.png" alt="Sensor integrated AI Systems Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/Sensor integrated AI Systems.png" alt="Sensor integrated AI Systems Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3"> IMPACT 3.0: Innovation to Market Product Acceleration Program</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Sensor integrated AI Systems for Optimal Monitoring and Control of Energy Assets</p>
@@ -770,7 +872,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\ISRO-IITM_ML.JPG" alt="ISRO-IITM_ML Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/ISRO-IITM_ML.JPG" alt="ISRO-IITM_ML Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">ISRO-IITM Space Technology Cell Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Machine learning aided early failure detection for preventive maintenance of thermo-vacuum chambers</p>
@@ -778,7 +880,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/RTTM-DD.JPG" alt="RTTM-DD Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">New Faculty Seed Grant Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Real-Time Thermal Management and Data-Driven Alternate Ventilation Strategy for Energy-Efficient Building Design</p>
@@ -786,7 +888,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\SMART-EV.png" alt="SMART-EV Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/SMART-EV.png" alt="SMART-EV Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Prime Minister's Early Career Research Grant</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Hybrid & Safe-Modular-Adaptive-Robust-Thermal (SMART) management system for Electric Vehicle Batteries </p>
@@ -798,7 +900,7 @@
                                 <div id="STMS-done" class="sub-tab-content">
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                                 <div class="card bg-white rounded-xl shadow-md overflow-hidden fade-in">
-                                                        <img src="projects\ECTCS-AEV.JPG" alt="ECTCS-AEV Project" class="w-full mx-auto object-cover">
+                                                        <img src="projects/ECTCS-AEV.JPG" alt="ECTCS-AEV Project" class="w-full mx-auto object-cover">
                                                         <div class="p-6">
                                                                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Industrial Consultancy Project</h3>
                                                                 <p class="text-gray-600"><strong>Title:</strong> Energy Consumption and Thermal Comfort Studies for Autonomous and Electric Vehicles</p>
@@ -837,7 +939,7 @@
                     <div id="phd" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Jawahar_P.png" alt="Jawahar - PhD Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Jawahar_P.png" alt="Jawahar - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Jawahar Prakash</h3>
                                         <p class="text-gray-600">Ph.D Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -845,7 +947,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Durga_Prasad_Pydi.png" alt="Durga - PhD Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Durga_Prasad_Pydi.png" alt="Durga - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Durga Prasad Pydi</h3>
                                         <p class="text-gray-600">Ph.D Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -856,7 +958,7 @@
                                 </div>
                                <!-- New PhD Start-->
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\suparna.png" alt="suparna - PhD Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/suparna.png" alt="suparna - PhD Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Suparna Dhara</h3>
                                         <p class="text-gray-600">Ph.D Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -870,7 +972,7 @@
                     <div id="ms" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Sachin.png" alt="Sachin MS - Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Sachin.png" alt="Sachin MS - Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Sachin Angad Kharsade</h3>
                                     <p class="text-gray-600">MS Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -878,7 +980,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                            <img src="people\Rahul_Ramadas.png" alt="Rahul - M.S Team Member" class="rounded-full mx-auto mb-4">
+                                            <img src="people/Rahul_Ramadas.png" alt="Rahul - M.S Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Rahul Ramadas</h3>
                                     <p class="text-gray-600">MS Research Scholar</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -886,12 +988,12 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Prakash-G.png" alt="Prakash - Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Prakash-G.png" alt="Prakash - Team Member" class="rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold text-gray-900">Prakash Koundinyan G</h3>
                                     <p class="text-gray-600">MS Research Scholar</p>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Ankur_Bhansali.png" alt="Ankur - Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Ankur_Bhansali.png" alt="Ankur - Team Member" class="rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold text-gray-900">Ankur Bhansali</h3>
                                     <p class="text-gray-600">MS Research Scholar</p>
                                     <div class="mt-4 flex justify-center space-x-6">
@@ -904,7 +1006,7 @@
                     <div id="mtech" class="sub-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Jaya Prakash Nakka.png" alt="Jaya MTech Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Jaya Prakash Nakka.png" alt="Jaya MTech Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Jaya Prakash Nakka</h3>
                                     <p class="text-gray-600">M.Tech [2027]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -912,7 +1014,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Artika Bansal.png" alt="Artika - MTech Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Artika Bansal.png" alt="Artika - MTech Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Artika Bansal</h3>
                                     <p class="text-gray-600">M.Tech [2027]</p>
                                         <div class="mt-4 flex justify-center space-x-6">
@@ -920,7 +1022,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Vishnu R_Mtech2027.png" alt="Vishnu - MTech Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Vishnu R_Mtech2027.png" alt="Vishnu - MTech Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Vishnu R</h3>
                                     <p class="text-gray-600">M.Tech [2027]</p>
                                 </div>
@@ -931,7 +1033,7 @@
                 <div id="PDF" class="tab-content">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                        <img src="people\Thilagan_K 2.png" alt="Dr. Thilagan - PDF Team" class="rounded-full mx-auto mb-4">
+                                        <img src="people/Thilagan_K 2.png" alt="Dr. Thilagan - PDF Team" class="rounded-full mx-auto mb-4">
                                         <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
                                                 <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
                                         </a>
@@ -943,7 +1045,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                        <img src="people\Vinay.png" alt="Dr. Vinay - PDF Team" class="rounded-full mx-auto mb-4">
+                                        <img src="people/Vinay.png" alt="Dr. Vinay - PDF Team" class="rounded-full mx-auto mb-4">
                                         <a href="#" target="_blank">
                                                 <h3 class="text-xl font-semibold text-gray-900">Dr. Vinay Kumar Yadav</h3>
                                         </a>
@@ -960,18 +1062,18 @@
                 <div id="staff" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Aurosampad_Mohanty.png" alt="Aurosampad - Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people/Aurosampad_Mohanty.png" alt="Aurosampad - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Aurosampad Mohanty</h3>
                             <p class="text-gray-600">Junior Research Fellow</p>
                         </div>
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Antro_Jagatheesh.png" alt="Antro - Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people/Antro_Jagatheesh.png" alt="Antro - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Antro Jagatheesh</h3>
                             <p class="text-gray-600">Senior Technician</p>
                         </div>
                   
                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                            <img src="people\Lakshmi 1.png" alt="Lakshmi - Team Member" class="rounded-full mx-auto mb-4">
+                            <img src="people/Lakshmi 1.png" alt="Lakshmi - Team Member" class="rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">Lakshmi</h3>
                             <p class="text-gray-600">Senior Executive</p>
                         </div>
@@ -988,7 +1090,7 @@
                     <div id="phd-Alumni" class="sub-tab-content active">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Thilagan_K 2.png" alt="Dr. Thilagan K." class="rounded-full mx-auto mb-4">
+                                                <img src="people/Thilagan_K 2.png" alt="Dr. Thilagan K." class="rounded-full mx-auto mb-4">
                                                 <a href="https://thilagan-k.github.io/Research-Profile/" target="_blank">
                                                         <h3 class="text-xl font-semibold text-gray-900">Dr. Thilagan K.</h3>
                                                 </a>
@@ -1001,7 +1103,7 @@
                                                 </div>
                                         </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\vijayakumar.S.png" alt="Dr. Vijayakumar S." class="rounded-full mx-auto mb-4">
+                                    <img src="people/vijayakumar.S.png" alt="Dr. Vijayakumar S." class="rounded-full mx-auto mb-4">
                                     <a href="" target="_blank">
                                         <h3 class="text-xl font-semibold text-gray-900">Dr. Vijayakumar S.</h3>
                                     </a>
@@ -1020,7 +1122,7 @@
                         <div id="ms-Alumni" class="sub-tab-content">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Naresh.png" alt="Team Member" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Naresh.png" alt="Team Member" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Naresh Chandora</h3>
                                                 <p class="text-gray-600">MS (Graduated 2024)</p>
                                                 <p class="text-gray-600">Last known : Airbus - CFD Analyst (ZEROe future aircraft) </p>
@@ -1029,7 +1131,7 @@
                                                 </div>
                                         </div>
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Amith.png" alt="Amith MS Team Member" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Amith.png" alt="Amith MS Team Member" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Amit Kumar Goswami</h3>
                                                 <p class="text-gray-600">MS (Graduated 2026)</p>
                                                 <p class="text-gray-600">Last known : ACL Digital </p>
@@ -1042,7 +1144,7 @@
                         <div id="mtech-Alumni" class="sub-tab-content">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Ramu_.png" alt="Ramu - MTech Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Ramu_.png" alt="Ramu - MTech Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Ramu Bodakunta</h3>
                                     <p class="text-gray-600">M.Tech (Graduated 2026)</p>
                                     <p class="text-gray-600">Last known : Heating Air Conditioning Design Engineer, Dar Sidara Company</p>
@@ -1051,7 +1153,7 @@
                                         </div>
                                 </div>
                                 <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                    <img src="people\Christy.png" alt="Christy MTech Team Member" class="rounded-full mx-auto mb-4">
+                                    <img src="people/Christy.png" alt="Christy MTech Team Member" class="rounded-full mx-auto mb-4">
                                         <h3 class="text-xl font-semibold text-gray-900">Christy V Mathew</h3>
                                     <p class="text-gray-600">M.Tech (Graduated 2026)</p>
                                     <p class="text-gray-600">Last known : Mechanical Engineer, Shell India Private Limited</p>
@@ -1060,7 +1162,7 @@
                                         </div>
                                 </div>
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                            <img src="people\Surya Bhanu Singh.png" alt="Surya - Team Member" class="rounded-full mx-auto mb-4">
+                                            <img src="people/Surya Bhanu Singh.png" alt="Surya - Team Member" class="rounded-full mx-auto mb-4">
                                             <h3 class="text-xl font-semibold text-gray-900">Surya Bhanu Singh</h3>
                                             <p class="text-gray-600">M.Tech (Graduated 2025)</p>                                    
                                             <p class="text-gray-600">Last known : Assistant Manager, KIA India Private Limited</p>
@@ -1078,7 +1180,7 @@
                                                 </div>
                                         </div>
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Satyanarayana Reddy.png" alt="KARRI - Team Member" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Satyanarayana Reddy.png" alt="KARRI - Team Member" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Satyanarayana Reddy Karri</h3>
                                                 <p class="text-gray-600">M.Tech (Graduated 2025)</p>
                                                 <p class="text-gray-600">Last known : Fire Engineer, Australia</p>
@@ -1087,7 +1189,7 @@
                                                 </div>
                                         </div>
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Priyanshu Misra.png" alt="Priyanshu - Team Member" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Priyanshu Misra.png" alt="Priyanshu - Team Member" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Priyanshu Misra</h3>
                                                 <p class="text-gray-600">M.Tech (Graduated 2024)</p>
                                                 <p class="text-gray-600">Last known : NTPC Ltd, India</p>
@@ -1100,7 +1202,7 @@
                         <div id="PDF-Alumni" class="sub-tab-content">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Dr Siva.png" alt="Dr. Siva Kumar Reddy - PDF Team" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Dr Siva.png" alt="Dr. Siva Kumar Reddy - PDF Team" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Dr. Siva Kumar Reddy Y.</h3>
                                                 <p class="text-gray-600">Last known : Post Doctoral Researcher at University of Cincinnati, USA</p>
                                                 <div class="mt-4 flex justify-center space-x-6">
@@ -1110,7 +1212,7 @@
                                                 </div>
                                         </div>
                                         <div class="card bg-white rounded-xl shadow-md p-6 text-center">
-                                                <img src="people\Dr Abish.png" alt="Dr. Abishraj VR - PDF Team" class="rounded-full mx-auto mb-4">
+                                                <img src="people/Dr Abish.png" alt="Dr. Abishraj VR - PDF Team" class="rounded-full mx-auto mb-4">
                                                 <h3 class="text-xl font-semibold text-gray-900">Dr. Abishraj V.R.</h3>
                                                 <p class="text-gray-600">Last known : Propulsion Engineerm, AgniKul Cosmos</p>
                                                 <div class="mt-4 flex justify-center space-x-6">
@@ -1149,9 +1251,9 @@
                         <!-- New Journal Start-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\Energy_Journal.jpg" alt="Energy_Journal Cover" class="publication-cover">
+                                <img src="images_J_C/journal/Energy_Journal.jpg" alt="Energy_Journal Cover" class="publication-cover">
                                 <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental insights into the performance of a compact desalination system</h3>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental insights into the performance of a compact desalination system <span class="badge-new-pub">NEW</span></h3>
                                     <p class="text-gray-600">Thilagan K., Advaith S., Mani A. <em>Energy, Volume 360, September 2026, Pages 141846</em>. <a href="https://doi.org/10.1016/j.energy.2026.141846" style="color: blue;" target="_blank">Read article</a></p>
                                 </div>
                             </div>
@@ -1159,7 +1261,7 @@
                        <!-- New Journal End-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\IJR.jpg" alt="IJR Cover" class="publication-cover">
+                                <img src="images_J_C/journal/IJR.jpg" alt="IJR Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Assessing Thermo-hydraulic performance: Enhanced evaporation in modified plate heat exchangers</h3>
                                     <p class="text-gray-600">Vijayakumar S., Advaith S., Mani A. <em>International Journal of Refrigeration, Volume 179, November 2025, Pages 442-456</em>. <a href="https://doi.org/10.1016/j.ijrefrig.2025.08.027" style="color: blue;" target="_blank">Read article</a></p>
@@ -1168,7 +1270,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\Solar compass.jpg" alt="Solar Compass Cover" class="publication-cover">
+                                <img src="images_J_C/journal/Solar compass.jpg" alt="Solar Compass Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Simulation studies and experimental validation on solar multi - effect desalination system</h3>
                                     <p class="text-gray-600">Thilagan K., Advaith S., Mani A. <em>Solar Compass, Volume 13, March 2025, 100110</em>. <a href="https://doi.org/10.1016/j.solcom.2025.100110" style="color: blue;" target="_blank">Read article</a></p>
@@ -1177,7 +1279,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\TSEP.jpg" alt="TSEP Cover" class="publication-cover">
+                                <img src="images_J_C/journal/TSEP.jpg" alt="TSEP Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental insights into heat transfer and pressure drop: A comparative study of copper spray coated and plain corrugated gasket plate heat exchangers</h3>
                                     <p class="text-gray-600">Vijayakumar S., Advaith S., Mani A.<em>Thermal Science and Engineering Progress, Volume 56, December 2024, 103070</em>. <a href="https://doi.org/10.1016/j.tsep.2024.103070" style="color: blue;" target="_blank">Read article</a></p>
@@ -1186,7 +1288,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\solar energy.jpg" alt="solar energy Cover" class="publication-cover">
+                                <img src="images_J_C/journal/solar energy.jpg" alt="solar energy Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Development and performance evaluation of solar absorption cold storage system for tropical climates</h3>
                                     <p class="text-gray-600">Vijayakumar S., Mani A., Advaith S.<em>Solar Energy, Volume 279, 1 September 2024, 112822</em>. <a href="https://doi.org/10.1016/j.solener.2024.112822" style="color: blue;" target="_blank">Read article</a></p>
@@ -1195,7 +1297,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\ate.jpg" alt="ATE Cover" class="publication-cover">
+                                <img src="images_J_C/journal/ate.jpg" alt="ATE Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Investigation of heat transfer and pressure drop characteristics in metal-foam filled channels in a plate heat exchanger: A comparative experimental study</h3>
                                     <p class="text-gray-600">Naresh Chandora, Mani A., Advaith S.<em>Applied Thermal Engineering, Volume 241, 15 March 2024, 122368</em>. <a href="https://doi.org/10.1016/j.applthermaleng.2024.122368" style="color: blue;" target="_blank">Read article</a></p>
@@ -1204,7 +1306,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\Energy AI.jpg" alt="Energy AI Cover" class="publication-cover">
+                                <img src="images_J_C/journal/Energy AI.jpg" alt="Energy AI Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Attention boosted autoencoder for building energy anomaly detection</h3>
                                     <p class="text-gray-600">Durga Prasad Pydi, Advaith S.<em>Energy and AI, Volume 14, October 2023, 100292</em>. <a href="https://doi.org/10.1016/j.egyai.2023.100292" style="color: blue;" target="_blank">Read article</a></p>
@@ -1213,7 +1315,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\REJ.jpg" alt="REJ Cover" class="publication-cover">
+                                <img src="images_J_C/journal/REJ.jpg" alt="REJ Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Assessing the impact of a novel hemispherical diffuser on a single-tank sensible thermal energy storage system</h3>
                                     <p class="text-gray-600"> Dipti Ranjan Parida, Advaith S., Nikhil Dani, Saptarshi Basu.<em> Renewable Energy, Volume 183, January 2022, 202-218</em>. <a href="https://doi.org/10.1016/j.renene.2021.10.099" style="color: blue;" target="_blank">Read article</a></p>
@@ -1222,7 +1324,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\EJM-B_F.jpg" alt="EJM-B_F Cover" class="publication-cover">
+                                <img src="images_J_C/journal/EJM-B_F.jpg" alt="EJM-B_F Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">On the generation and evolution of heated vortex rings in viscous fluids</h3>
                                     <p class="text-gray-600"> Advaith S., Aswathi K.T., Saptarshi Basu.<em> European Journal of Mechanics - B/Fluids, Volume 91, January–February 2022, 107-120</em>. <a href="https://doi.org/10.1016/j.euromechflu.2021.09.014" style="color: blue;" target="_blank">Read article</a></p>
@@ -1231,7 +1333,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\REJ.jpg" alt="REJ Cover" class="publication-cover">
+                                <img src="images_J_C/journal/REJ.jpg" alt="REJ Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental investigation on single-medium stratified thermal energy storage system</h3>
                                     <p class="text-gray-600"> Advaith S., Dipti Ranjan Parida, Aswathi K.T., Nikhil Dani, Utpal Kumar Chetia, Kamanio Chattopadhyay, Saptarshi Basu.<em> Renewable Energy, Volume 164, February 2021, 146-155</em>. <a href="https://doi.org/10.1016/j.renene.2020.09.092" style="color: blue;" target="_blank">Read article</a></p>
@@ -1240,7 +1342,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\JFM.jpg" alt="JFM Cover" class="publication-cover">
+                                <img src="images_J_C/journal/JFM.jpg" alt="JFM Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Understanding evolution of vortex rings in viscous fluids</h3>
                                     <p class="text-gray-600"> Aashay Tinaikar, Advaith S., Basu S.<em> Journal of Fluid Mechanics, Volume 836, February 2018, 873 - 909</em>. <a href="https://doi.org/10.1017/jfm.2017.815" style="color: blue;" target="_blank">Read article</a></p>
@@ -1249,7 +1351,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\PoF.jpg" alt="PoF Cover" class="publication-cover">
+                                <img src="images_J_C/journal/PoF.jpg" alt="PoF Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Interaction of vortex ring with a stratified finite thickness interface</h3>
                                     <p class="text-gray-600"> Advaith S., Manu K.V., Aashay Tinaikar, Utpal Kumar Chetia, Saptarshi Basu.<em> Physics of Fluids, Volume 29, Issue 9, September 2017, 093602</em>. <a href="https://doi.org/10.1063/1.4994264" style="color: blue;" target="_blank">Read article</a></p>
@@ -1258,7 +1360,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\ate.jpg" alt="ATE Cover" class="publication-cover">
+                                <img src="images_J_C/journal/ate.jpg" alt="ATE Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Short and long-term sensitivity of lab-scale thermocline based thermal storage to flow disturbances</h3>
                                     <p class="text-gray-600"> Sandeep Hatte, Carolina Mira-Hernández, Advaith S., Aashay Tinaikar, Utpal Kumar Chetia, Manu K.V., Kamanio Chattopadhyay, Justin A. Weibel, Suresh V. Garimella, Vinod Srinivasan, Saptarshi Basu.<em> Applied Thermal Engineering, Volume 109, Part B, October 2016, 936-948</em>. <a href="https://doi.org/10.1016/j.applthermaleng.2016.04.138" style="color: blue;" target="_blank">Read article</a></p>
@@ -1267,7 +1369,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\journal\ate.jpg" alt="ATE Cover" class="publication-cover">
+                                <img src="images_J_C/journal/ate.jpg" alt="ATE Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Spatio-temporal disruption of thermocline by successive laminar vortex pairs in a single tank thermal energy storage</h3>
                                     <p class="text-gray-600"> Aashay Tinaikar, Advaith S., Utpal Kumar Chetia, Manu K.V., Saptarshi Basu.<em> Applied Thermal Engineering, Volume 109, Part B, October 2016, 924-935</em>. <a href="https://doi.org/10.1016/j.applthermaleng.2016.04.105" style="color: blue;" target="_blank">Read article</a></p>
@@ -1284,9 +1386,9 @@
                         <!-- New Conference Start-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\WSC 2026.png" alt="WSC 2026 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/WSC 2026.png" alt="WSC 2026 Cover" class="publication-cover">
                                 <div>
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Pathways To A Sustainable Seafood Cold Chain In India Using Natural Refrigerants</h3>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Pathways To A Sustainable Seafood Cold Chain In India Using Natural Refrigerants <span class="badge-new-pub">NEW</span></h3>
                                     <p class="text-gray-600">Suparna Dhara, Advaith S.<em>World Seafood Congress 2026!!, 09-11 February 2026, Chennai Trade Centre, Chennai, India</em>. <a href="https://wsc2026.com" style="color: blue;" target="_blank">Read article</a></p>
                                 </div>
                             </div>
@@ -1294,7 +1396,7 @@
                         <!-- New Conference End-->
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\FLUCOME2025.png" alt="FLUCOME2025 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/FLUCOME2025.png" alt="FLUCOME2025 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Digital Holographic Study of Sessile Acetone Droplet Evaporation</h3>
                                     <p class="text-gray-600">Jawahar Prakash J., Advaith S., Ganesan A.R., Mani A. <em>FLUCOME 2025 – 17th International Conference on Fluid Control, Measurements, and Visualization, 04-07 November 2025, Delft, The Netherlands</em>. <a href="https://www.flucome2025.com/" style="color: blue;" target="_blank">Read article</a></p>
@@ -1303,7 +1405,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Compact Desalination System</h3>
                                     <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
@@ -1312,7 +1414,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/ICP2025.JPG" alt="ICP2025 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Thermodynamic and Performance analysis of an energy- efficient low-temperature grey water treatment system</h3>
                                     <p class="text-gray-600">Prakash Koundinyan G., Thilagan K., Advaith S., Srikrishna Sahu <em>International Conference on Polygeneration 2025, 09-11 October 2025, Antalya, Türkiye</em>. <a href="https://drive.google.com/file/d/1-51aXj_jhISJuXglRQYDZQfJ9EyUjtvG/view?usp=sharing" style="color: blue;" target="_blank">Read article</a></p>
@@ -1321,7 +1423,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Insights into Heat Transfer and Pressure Drop: A Comparative Study of Copper Spray Coated and Plain Corrugated Gasket Plate Heat Exchangers</h3>
                                     <p class="text-gray-600">Vijayakumar S., Advaith S., Mani. A. <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning, 13-15 March 2024, IIT Madras, Chennai, India</em>. <a href="https://ge.iitm.ac.in/ncrac-2024/" style="color: blue;" target="_blank">Read article</a></p>
@@ -1330,7 +1432,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/ncrac2024.png" alt="ncrac2024 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Simulation studies and experimental validation on solar multi-effect desalination system in Kanyakumari</h3>
                                     <p class="text-gray-600">Thilagan K., Advaith S., Mani. A. <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning, 13-15 March 2024, IIT Madras, Chennai, India</em>. <a href="https://ge.iitm.ac.in/ncrac-2024/" style="color: blue;" target="_blank">Read article</a></p>
@@ -1339,7 +1441,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\MHMT2024.png" alt="MHMT2024 Cover" class="publication-cover">
+                                <img src="images_J_C/conference/MHMT2024.png" alt="MHMT2024 Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Investigations on Measuring Falling Film Thickness on Vertical Plates with and without Copper Metal Foam</h3>
                                     <p class="text-gray-600">Naresh Chandora, Mani Annamalai, Advaith S. <em> 9th World Congress on Momentum, Heat and Mass Transfer (MHMT'24), 11-13 April 2024, Imperial College London Conference Center, London, United Kingdom</em>. <a href="https://avestia.com/MHMT2024_Proceedings/files/paper/ENFHT/ENFHT_262.pdf" style="color: blue;" target="_blank">Read article</a></p>
@@ -1348,7 +1450,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
-                                <img src="images_J_C\conference\FMFP2023.JPG" alt="FMFP2023.JPG Cover" class="publication-cover">
+                                <img src="images_J_C/conference/FMFP2023.JPG" alt="FMFP2023.JPG Cover" class="publication-cover">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Experimental Studies on Falling Film Thickness Measurement on Inclined Plates with and without Surface Modification</h3>
                                     <p class="text-gray-600">Naresh Khimaram Chandora, Advaith S., Mani. A. <em>10th International and 50th National Conference on Fluid Mechanics and Fluid Power, 20-22 December 2023, IIT Jodhpur, India</em>. <a href="https://link.springer.com/chapter/10.1007/978-981-97-6776-2_13" style="color: blue;" target="_blank">Read article</a></p>
@@ -1360,7 +1462,7 @@
                 <div id="patents" class="tab-content">
                     <div class="space-y-6">
                         <div class="publication-item bg-white rounded-xl shadow-md p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">A system and a method for energy-efficient low temperature greywater treatment</h3>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">A system and a method for energy-efficient low temperature greywater treatment <span class="badge-new-pub">NEW</span></h3>
                             <p class="text-gray-600">Advaith S., Srikrishna Sahu, Prakash Koundinyan, Thilagan K. and Thileepan Panchatsaram, 202641045609, April 2026 [Published]</p>
                         </div>
                     </div>
@@ -1402,7 +1504,7 @@
                         <!-- Media Slide 1 -->
                         <div class="media-slide">
                             <div class="media-card">
-                                <img src="news\TOI_Chennai_04-06-2025.JPG" alt="Media Clip 2">
+                                <img src="news/TOI_Chennai_04-06-2025.JPG" alt="Media Clip 2">
                                 <div class="media-card-content">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Times of India Article</h3>
                                     <p class="text-gray-600 mb-4">IIT-M'S solar-powered desal unit aims at 10K liters of potable water a day. Clip dated : June 05, 2025.</p>
@@ -1413,7 +1515,7 @@
                         <!-- Media Slide 2 -->
                         <div class="media-slide">
                             <div class="media-card">
-                                <img src="news\IITM-LinkedIn_MED.jpeg" alt="Media Clip 2">
+                                <img src="news/IITM-LinkedIn_MED.jpeg" alt="Media Clip 2">
                                 <div class="media-card-content">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">IIT M LinkedIn #TechTuesday</h3>
                                     <p class="text-gray-600 mb-4">In a country like India, where over 90% of land receives ample solar insolation, this solution presents a sustainable, off-grid, and scalable method to address water scarcity using indigenous, clean technology. Clip dated : May, 2025.</p>
@@ -1424,7 +1526,7 @@
                         <!-- Media Slide 3 -->
                         <div class="media-slide">
                             <div class="media-card">
-                                <img src="news\solar-desalination-success.jpeg" alt="Media Clip 3">
+                                <img src="news/solar-desalination-success.jpeg" alt="Media Clip 3">
                                 <div class="media-card-content">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">IIT-M TECH TALK</h3>
                                     <p class="text-gray-600 mb-4">A Solar Multi-Effect Desalination Success!. Clip dated : May 07, 2025.</p>
@@ -1435,7 +1537,7 @@
                         <!-- Media Slide 4 -->
                         <div class="media-slide">
                             <div class="media-card">
-                                <img src="news\Hot-and-Cold-techtalk.jpg" alt="Media Clip 4">
+                                <img src="news/Hot-and-Cold-techtalk.jpg" alt="Media Clip 4">
                                 <div class="media-card-content">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">IIT-M TECH TALK</h3>
                                     <p class="text-gray-600 mb-4">Can the sun act as a cooling agent? Don’t be ridiculous! But that’s exactly what we have with solar-powered cold storage systems!. Clip dated : January 21, 2025.</p>
@@ -1597,7 +1699,7 @@
     <footer class="bg-gray-900 text-white py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <p class="text-sm">© 2022 Smart Thermal & Renewables Lab. All rights reserved.</p>
+                <p class="text-sm">© 2022–2026 Smart Thermal & Renewables Lab. All rights reserved.</p>
                 <div class="mt-4 flex justify-center space-x-6">
                     <a href="https://mech.iitm.ac.in/profile.php?fname=advaith" class="hover:text-blue-400 transition"> <img src="logo/IIT_Madras_Logo.png" class="w-10 h-10"> </a>
                     <a href="https://www.linkedin.com/company/starlab-iitm/" class="hover:text-blue-400 transition"> <img src="logo/LinkedIn_logo.png" class="w-10 h-10"> </a>
@@ -1753,6 +1855,18 @@
                 });
             });
         });
+        // News Flash Banner dismiss (persists via localStorage)
+        const newsFlash = document.getElementById('news-flash');
+        const newsFlashClose = document.getElementById('news-flash-close');
+        if (newsFlash && newsFlashClose) {
+            if (localStorage.getItem('starlab-news-flash-dismissed') === 'true') {
+                newsFlash.classList.add('hidden');
+            }
+            newsFlashClose.addEventListener('click', () => {
+                newsFlash.classList.add('hidden');
+                localStorage.setItem('starlab-news-flash-dismissed', 'true');
+            });
+        }
         // Day and Night Mode Toggle
         const toggle = document.getElementById('theme-toggle');
         const html = document.documentElement;
