@@ -420,49 +420,64 @@
         #conference-list::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
-        /* Latest Updates / News Flash Banner */
+        /* Latest Updates / Rolling News Flash Banner */
         .news-flash {
             background: linear-gradient(90deg, #1e3a8a, #3b82f6, #1e3a8a);
             background-size: 200% 100%;
-            animation: gradient-shift 4s ease infinite, flash-pulse 2s ease-in-out infinite;
+            animation: gradient-shift 6s ease infinite;
             color: white;
             overflow: hidden;
             position: relative;
             z-index: 40;
+            height: 2.75rem;
         }
         @keyframes gradient-shift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        @keyframes flash-pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
-        }
         .news-flash-inner {
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 0.6rem 2.5rem 0.6rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
+            height: 100%;
             position: relative;
+            padding-right: 2.75rem; /* space for close button */
+        }
+        .news-flash-track {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: news-roll 42s linear infinite;
+            will-change: transform;
+        }
+        .news-flash-track:hover {
+            animation-play-state: paused;
+        }
+        @keyframes news-roll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .news-flash-content {
+            display: inline-flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 0 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
         .news-flash .badge-new {
             background: #fbbf24;
             color: #1e3a8a;
             font-size: 0.7rem;
             font-weight: 700;
-            padding: 0.15rem 0.5rem;
+            padding: 0.18rem 0.55rem;
             border-radius: 9999px;
             animation: badge-bounce 1.5s ease-in-out infinite;
             flex-shrink: 0;
         }
         @keyframes badge-bounce {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.12); }
         }
         .news-flash a {
             color: #bfdbfe;
@@ -474,28 +489,29 @@
         }
         .news-flash-close {
             position: absolute;
-            right: 0.75rem;
+            right: 0.6rem;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            width: 1.5rem;
-            height: 1.5rem;
+            width: 1.6rem;
+            height: 1.6rem;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.2s;
+            z-index: 10;
         }
         .news-flash-close:hover {
-            background: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.4);
         }
         .dark .news-flash {
-            filter: invert(1) hue-rotate(180deg); /* counteract the global dark invert so banner stays vibrant */
+            filter: invert(1) hue-rotate(180deg);
         }
         .news-flash.hidden {
             display: none;
@@ -576,14 +592,43 @@
             </div>
         </div>
     </nav>
-    <!-- Latest Updates Flash Banner -->
+    <!-- Latest Updates Rolling News Flash Banner -->
     <div id="news-flash" class="news-flash">
         <div class="news-flash-inner">
-            <span class="badge-new">NEW</span>
-            <span>Latest: Compact Desalination paper in <em>Energy</em> (2026) · Greywater Patent Publised (IP 202641045609) 
-            <a href="#publications">View Publications →</a>
-            2026 Graduation : Ph.D ~ Dr. Vijayakumar · M.S ~ Mr. Amit Kumar Goswami · M.Tech ~ Ramu Bodakunta and Christy V Mathew </span>
-            <a href="#mtech-Alumni">View Profile →</a>
+            <div class="news-flash-track">
+                <!-- First copy -->
+                <div class="news-flash-content">
+                    <span class="badge-new">NEW</span>
+                    <span>Latest:
+                        <a href="https://doi.org/10.1016/j.energy.2026.141846" target="_blank" rel="noopener">Compact Desalination paper in <em>Energy</em> (2026)</a>
+                        ·
+                        <a href="#publications">Greywater Patent Published (IP 202641045609)</a>
+                        ·
+                        2026 Graduations:
+                        <a href="#team">Ph.D – Dr. Vijayakumar S.</a>
+                        ·
+                        <a href="#team">M.S – Mr. Amit Kumar Goswami</a>
+                        ·
+                        <a href="#team">M.Tech – Ramu Bodakunta &amp; Christy V Mathew</a>
+                    </span>
+                </div>
+                <!-- Second copy for seamless loop -->
+                <div class="news-flash-content">
+                    <span class="badge-new">NEW</span>
+                    <span>Latest:
+                        <a href="https://doi.org/10.1016/j.energy.2026.141846" target="_blank" rel="noopener">Compact Desalination paper in <em>Energy</em> (2026)</a>
+                        ·
+                        <a href="#publications">Greywater Patent Published (IP 202641045609)</a>
+                        ·
+                        2026 Graduations:
+                        <a href="#team">Ph.D – Dr. Vijayakumar S.</a>
+                        ·
+                        <a href="#team">M.S – Mr. Amit Kumar Goswami</a>
+                        ·
+                        <a href="#team">M.Tech – Ramu Bodakunta &amp; Christy V Mathew</a>
+                    </span>
+                </div>
+            </div>
             <button class="news-flash-close" id="news-flash-close" aria-label="Dismiss">&times;</button>
         </div>
     </div>
