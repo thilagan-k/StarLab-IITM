@@ -10,16 +10,18 @@
             darkMode: 'class',
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             @apply bg-gray-50;
         }
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .fade-in.visible {
             opacity: 1;
@@ -276,7 +278,67 @@
             width: 20px;
             height: 20px;
         }
-        /* Dark Mode Overrides */
+
+        /* === Modern Visual Refresh === */
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        
+        /* Glass & modern cards */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass {
+            background: rgba(17, 24, 39, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Better nav */
+        nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85) !important;
+        }
+        .dark nav {
+            background: rgba(17, 24, 39, 0.85) !important;
+        }
+        
+        /* Smoother card hover */
+        .card, .media-card {
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+        }
+        .card:hover, .media-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Refined buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.45);
+        }
+        
+        /* Hero improvements */
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+        }
+        
+        /* Selection already present, keep */
+        
+        /* Subtle section separators via padding already exist */
+        /* Better focus rings for a11y */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+                /* Dark Mode Overrides */
         .dark body {
             @apply bg-gray-900 text-gray-100;
         }
@@ -368,12 +430,9 @@
         .dark .contact-info a:hover {
             color: #3b82f6;
         }
-        /* Night mode color inversion */
+        /* Proper dark mode (no invert filter) */
         .dark {
-            filter: invert(1) hue-rotate(180deg);
-        }
-        .dark img, .dark video, .dark iframe, .dark embed, .dark object {
-            filter: invert(1) hue-rotate(180deg);
+            color-scheme: dark;
         }
         /* New: Custom text selection highlight for light mode */
         ::selection {
@@ -512,7 +571,7 @@
             background: rgba(255,255,255,0.4);
         }
         .dark .news-flash {
-            filter: invert(1) hue-rotate(180deg);
+            /* proper dark styling handled by classes */
         }
         .news-flash.hidden {
             display: none;
