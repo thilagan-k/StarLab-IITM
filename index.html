@@ -210,10 +210,12 @@
         .publication-cover { width: 100px; height: 140px; object-fit: cover; border-radius: 0.5rem; box-shadow: var(--shadow); }
         @media (max-width: 640px) { .publication-cover { width: 80px; height: 110px; } }
         #journal-list, #conference-list, #patents {
-            max-height: 620px;
+            max-height: 640px;
             overflow-y: auto;
             padding-right: 12px;
+            padding-bottom: 2rem; /* room so last item is not clipped */
             scroll-behavior: smooth;
+            scroll-padding-bottom: 2rem;
         }
         /* Visible scrollbar */
         #journal-list::-webkit-scrollbar,
@@ -256,13 +258,11 @@
         #patents > div {
             margin-bottom: 2rem;
         }
-        #journal-list .publication-item:last-child,
+        /* keep space after last item so it is not cut off when scrolling */
         #journal-list > div:last-child,
-        #conference-list .publication-item:last-child,
         #conference-list > div:last-child,
-        #patents .publication-item:last-child,
         #patents > div:last-child {
-            margin-bottom: 0;
+            margin-bottom: 1rem;
         }
 
 
