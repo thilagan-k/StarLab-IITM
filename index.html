@@ -84,16 +84,32 @@
         }
 
         /* Cards */
-        .card, .media-card {
+        .card, .media-card, .publication-item {
             background: var(--surface);
-            border: 1px solid var(--border);
+            border: 1.5px solid #cbd5e1;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.2s ease;
         }
-        .card:hover, .media-card:hover {
+        .dark .card, .dark .media-card, .dark .publication-item {
+            border: 1.5px solid #475569;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .card:hover, .media-card:hover, .publication-item:hover {
             transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
+            border-color: #3b82f6;
+        }
+        .dark .card:hover, .dark .media-card:hover, .dark .publication-item:hover {
+            border-color: #60a5fa;
+        }
+        /* Make image frames / covers more visible */
+        .publication-cover, .card img, .media-card img {
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .dark .publication-cover, .dark .card img, .dark .media-card img {
+            border: 1px solid #475569;
         }
 
         /* Buttons */
