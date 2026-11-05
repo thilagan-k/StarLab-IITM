@@ -209,7 +209,7 @@
         /* Publications */
         .publication-cover { width: 100px; height: 140px; object-fit: cover; border-radius: 0.5rem; box-shadow: var(--shadow); }
         @media (max-width: 640px) { .publication-cover { width: 80px; height: 110px; } }
-        #journal-list, #conference-list { max-height: 640px; overflow-y: auto; padding-right: 8px; }
+        #journal-list, #conference-list { max-height: none; overflow: visible; padding-right: 8px; }
         #journal-list .publication-item,
         #journal-list > div,
         #conference-list .publication-item,
@@ -1829,7 +1829,7 @@
         if (!list) return;
 
         try {
-            const res = await fetch(JOURNAL_SHEET_CSV_URL);
+            const res = await fetch(JOURNAL_SHEET_CSV_URL + (JOURNAL_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now());
             if (!res.ok) throw new Error('Sheet fetch failed');
             const csv = await res.text();
 
@@ -1844,6 +1844,7 @@
             const iAuthors = idx('authors');
             const iJournal = idx('journal');
             const iVolume = idx('volume');
+            const iIssue = idx('issue') !== -1 ? idx('issue') : idx('number');
             const iYear = idx('year');
             const iPages = idx('pages');
             const iLink = idx('link');
@@ -1859,6 +1860,7 @@
                 const authors = escapeHtml(row[iAuthors] || '');
                 const journal = escapeHtml(row[iJournal] || '');
                 const volume = escapeHtml(row[iVolume] || '');
+                const issue = (iIssue >= 0) ? escapeHtml(row[iIssue] || '') : '';
                 const year = escapeHtml(row[iYear] || '');
                 const pages = escapeHtml(row[iPages] || '');
                 const link = (row[iLink] || '').trim();
@@ -1868,6 +1870,7 @@
                 const metaParts = [];
                 if (journal) metaParts.push(journal);
                 if (volume) metaParts.push('Volume ' + volume);
+                if (issue) metaParts.push('Issue ' + issue);
                 if (year) metaParts.push(year);
                 if (pages) metaParts.push('Pages ' + pages);
                 const meta = metaParts.join(', ');
@@ -1939,7 +1942,7 @@
             }
         }
         if (cur || row.length) { row.push(cur); rows.push(row); }
-        return rows.filter(r => r.some(cell => cell.trim()));
+        return rows.filter(r => r && r.length && r.some(cell => String(cell).trim()));
     }
 
     function escapeHtml(s) {
