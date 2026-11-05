@@ -211,11 +211,19 @@
         @media (max-width: 640px) { .publication-cover { width: 80px; height: 110px; } }
         #journal-list, #conference-list { max-height: 640px; overflow-y: auto; padding-right: 8px; }
         #journal-list .publication-item,
-        #journal-list > div {
+        #journal-list > div,
+        #conference-list .publication-item,
+        #conference-list > div,
+        #patents .publication-item,
+        #patents > div {
             margin-bottom: 2rem;
         }
         #journal-list .publication-item:last-child,
-        #journal-list > div:last-child {
+        #journal-list > div:last-child,
+        #conference-list .publication-item:last-child,
+        #conference-list > div:last-child,
+        #patents .publication-item:last-child,
+        #patents > div:last-child {
             margin-bottom: 0;
         }
         #journal-list::-webkit-scrollbar, #conference-list::-webkit-scrollbar { width: 6px; }
