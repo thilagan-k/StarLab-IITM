@@ -1820,7 +1820,7 @@
     //    Title | Authors | Journal | Volume | Year | Pages | Link | CoverImage | IsNew
     // 2. File → Share → Publish to web → choose the sheet → CSV → Publish
     // 3. Paste the published CSV URL here:
-    const JOURNAL_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn9-QDGa5asBAF5iCAmawaL1Qqw3nbqVysUqa8Y4yiEfLnAcIsBlJbpOyCjNzHvfePj3p2B0HXy4yu/pubhtml";   // <-- paste your Google Sheet CSV URL here
+    const JOURNAL_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn9-QDGa5asBAF5iCAmawaL1Qqw3nbqVysUqa8Y4yiEfLnAcIsBlJbpOyCjNzHvfePj3p2B0HXy4yu/pub?output=csv";   // <-- paste your Google Sheet CSV URL here
 
     async function loadJournalFromSheet() {
         if (!JOURNAL_SHEET_CSV_URL) return; // keep existing content if no URL set
