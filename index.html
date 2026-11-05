@@ -210,6 +210,14 @@
         .publication-cover { width: 100px; height: 140px; object-fit: cover; border-radius: 0.5rem; box-shadow: var(--shadow); }
         @media (max-width: 640px) { .publication-cover { width: 80px; height: 110px; } }
         #journal-list, #conference-list { max-height: 640px; overflow-y: auto; padding-right: 8px; }
+        #journal-list .publication-item,
+        #journal-list > div {
+            margin-bottom: 2rem;
+        }
+        #journal-list .publication-item:last-child,
+        #journal-list > div:last-child {
+            margin-bottom: 0;
+        }
         #journal-list::-webkit-scrollbar, #conference-list::-webkit-scrollbar { width: 6px; }
         #journal-list::-webkit-scrollbar-thumb, #conference-list::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
 
