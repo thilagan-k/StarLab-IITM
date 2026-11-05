@@ -89,7 +89,7 @@
             border: 1.5px solid #cbd5e1;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.2s ease;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.25s ease;
         }
         .dark .card, .dark .media-card, .dark .publication-item {
             border: 1.5px solid #475569;
@@ -143,10 +143,19 @@
         /* Fade-in */
         .fade-in {
             opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+            transform: translateY(32px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, transform;
         }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
+        /* Stagger support */
+        .fade-in:nth-child(1) { transition-delay: 0.05s; }
+        .fade-in:nth-child(2) { transition-delay: 0.12s; }
+        .fade-in:nth-child(3) { transition-delay: 0.19s; }
+        .fade-in:nth-child(4) { transition-delay: 0.26s; }
+        .fade-in:nth-child(5) { transition-delay: 0.33s; }
+        .fade-in:nth-child(6) { transition-delay: 0.40s; }
+        .fade-in:nth-child(n+7) { transition-delay: 0.47s; }
 
         /* Tabs */
         .tab, .sub-tab {
@@ -268,7 +277,14 @@
 
         /* Preserve other necessary rules from original that might be referenced */
         .tab-content, .sub-tab-content { display: none; }
-        .tab-content.active, .sub-tab-content.active { display: block; }
+        .tab-content.active, .sub-tab-content.active {
+            display: block;
+            animation: tabFade 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes tabFade {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .carousel { position: relative; width: auto; height: auto; overflow: visible; }
         .carousel-inner { display: flex; flex-wrap: wrap; gap: 0; margin: 0; padding: 0; }
         .carousel-slide { flex: 0 0 calc(100% / 3); height: auto; position: relative; opacity: 0; animation: slideIn 2s ease-out forwards; }
@@ -1760,6 +1776,21 @@
             }
         }
     </script>
+
+
+        // Enhanced staggered reveal on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.fade-in, .card, .publication-item');
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            items.forEach(el => io.observe(el));
+        });
 
 </body>
 </html>
