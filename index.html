@@ -1813,5 +1813,125 @@
             items.forEach(el => io.observe(el));
         });
     </script>
+
+    <!-- Google Sheets → Journal Publications (edit the URL below) -->
+    <script>
+    // 1. Create a Google Sheet with columns:
+    //    Title | Authors | Journal | Volume | Year | Pages | Link | CoverImage | IsNew
+    // 2. File → Share → Publish to web → choose the sheet → CSV → Publish
+    // 3. Paste the published CSV URL here:
+    const JOURNAL_SHEET_CSV_URL = "";   // <-- paste your Google Sheet CSV URL here
+
+    async function loadJournalFromSheet() {
+        if (!JOURNAL_SHEET_CSV_URL) return; // keep existing content if no URL set
+
+        const list = document.getElementById('journal-list');
+        if (!list) return;
+
+        try {
+            const res = await fetch(JOURNAL_SHEET_CSV_URL);
+            if (!res.ok) throw new Error('Sheet fetch failed');
+            const csv = await res.text();
+
+            // Simple CSV parse (handles quoted fields)
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+
+            const iTitle = idx('title');
+            const iAuthors = idx('authors');
+            const iJournal = idx('journal');
+            const iVolume = idx('volume');
+            const iYear = idx('year');
+            const iPages = idx('pages');
+            const iLink = idx('link');
+            const iCover = idx('coverimage');
+            const iNew = idx('isnew');
+
+            let html = '';
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iTitle] || !row[iTitle].trim()) continue;
+
+                const title = escapeHtml(row[iTitle] || '');
+                const authors = escapeHtml(row[iAuthors] || '');
+                const journal = escapeHtml(row[iJournal] || '');
+                const volume = escapeHtml(row[iVolume] || '');
+                const year = escapeHtml(row[iYear] || '');
+                const pages = escapeHtml(row[iPages] || '');
+                const link = (row[iLink] || '').trim();
+                const cover = (row[iCover] || '').trim() || 'images_J_C/journal/Energy_Journal.jpg';
+                const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
+
+                const metaParts = [];
+                if (journal) metaParts.push(journal);
+                if (volume) metaParts.push('Volume ' + volume);
+                if (year) metaParts.push(year);
+                if (pages) metaParts.push('Pages ' + pages);
+                const meta = metaParts.join(', ');
+
+                html += `
+                <div class="space-y-6">
+                    <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                        <img src="${escapeAttr(cover)}" alt="${title} Cover" class="publication-cover">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${title}${isNew ? ' <span class="badge-new-pub">NEW</span>' : ''}</h3>
+                            <p class="text-gray-600">${authors}${meta ? ' <em>' + meta + '</em>.' : ''} ${link ? '<a href="' + escapeAttr(link) + '" style="color: blue;" target="_blank">Read article</a>' : ''}</p>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            if (html) {
+                list.innerHTML = html;
+                // Re-attach search if present
+                const search = document.getElementById('journal-search');
+                if (search) {
+                    search.dispatchEvent(new Event('input'));
+                }
+            }
+        } catch (e) {
+            console.warn('Could not load Journal sheet:', e);
+            // Keep existing static content
+        }
+    }
+
+    function parseCSV(text) {
+        const rows = [];
+        let row = [], cur = '', inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            if (inQuotes) {
+                if (c === '"' && text[i+1] === '"') { cur += '"'; i++; }
+                else if (c === '"') inQuotes = false;
+                else cur += c;
+            } else {
+                if (c === '"') inQuotes = true;
+                else if (c === ',') { row.push(cur); cur = ''; }
+                else if (c === '\n' || c === '\r') {
+                    if (c === '\r' && text[i+1] === '\n') i++;
+                    row.push(cur); rows.push(row); row = []; cur = '';
+                } else cur += c;
+            }
+        }
+        if (cur || row.length) { row.push(cur); rows.push(row); }
+        return rows.filter(r => r.some(cell => cell.trim()));
+    }
+
+    function escapeHtml(s) {
+        return String(s)
+            .replace(/&/g, '&')
+            .replace(/</g, '<')
+            .replace(/>/g, '>')
+            .replace(/"/g, '"')
+            .replace(/'/g, '&#39;');
+    }
+    function escapeAttr(s) { return escapeHtml(s); }
+
+    document.addEventListener('DOMContentLoaded', loadJournalFromSheet);
+    </script>
+
 </body>
 </html>
