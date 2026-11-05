@@ -1862,7 +1862,7 @@
                 const year = escapeHtml(row[iYear] || '');
                 const pages = escapeHtml(row[iPages] || '');
                 const link = (row[iLink] || '').trim();
-                const cover = (row[iCover] || '').trim() || 'images_J_C/journal/Energy_Journal.jpg';
+                const cover = toImageUrl((row[iCover] || '').trim()) || 'images_J_C/journal/Energy_Journal.jpg';
                 const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
 
                 const metaParts = [];
@@ -1896,6 +1896,28 @@
             console.warn('Could not load Journal sheet:', e);
             // Keep existing static content
         }
+    }
+
+
+    // Convert Google Drive share links (or normal URLs) into a usable image URL
+    function toImageUrl(input) {
+        if (!input) return '';
+        const s = input.trim();
+        // Already a direct image or relative path
+        if (!s.includes('drive.google.com') && !s.includes('docs.google.com')) return s;
+        // Extract file ID from common Drive URL patterns
+        let id = '';
+        const m1 = s.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        const m2 = s.match(/id=([a-zA-Z0-9_-]+)/);
+        const m3 = s.match(/open\?id=([a-zA-Z0-9_-]+)/);
+        if (m1) id = m1[1];
+        else if (m2) id = m2[1];
+        else if (m3) id = m3[1];
+        if (id) {
+            // Direct viewable image URL from Drive
+            return 'https://drive.google.com/uc?export=view&id=' + id;
+        }
+        return s;
     }
 
     function parseCSV(text) {
