@@ -209,7 +209,45 @@
         /* Publications */
         .publication-cover { width: 100px; height: 140px; object-fit: cover; border-radius: 0.5rem; box-shadow: var(--shadow); }
         @media (max-width: 640px) { .publication-cover { width: 80px; height: 110px; } }
-        #journal-list, #conference-list { max-height: none; overflow: visible; padding-right: 8px; }
+        #journal-list, #conference-list, #patents {
+            max-height: 620px;
+            overflow-y: auto;
+            padding-right: 12px;
+            scroll-behavior: smooth;
+        }
+        /* Visible scrollbar */
+        #journal-list::-webkit-scrollbar,
+        #conference-list::-webkit-scrollbar,
+        #patents::-webkit-scrollbar {
+            width: 10px;
+        }
+        #journal-list::-webkit-scrollbar-track,
+        #conference-list::-webkit-scrollbar-track,
+        #patents::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        #journal-list::-webkit-scrollbar-thumb,
+        #conference-list::-webkit-scrollbar-thumb,
+        #patents::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 8px;
+        }
+        #journal-list::-webkit-scrollbar-thumb:hover,
+        #conference-list::-webkit-scrollbar-thumb:hover,
+        #patents::-webkit-scrollbar-thumb:hover {
+            background: #1e3a8a;
+        }
+        .dark #journal-list::-webkit-scrollbar-track,
+        .dark #conference-list::-webkit-scrollbar-track,
+        .dark #patents::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .dark #journal-list::-webkit-scrollbar-thumb,
+        .dark #conference-list::-webkit-scrollbar-thumb,
+        .dark #patents::-webkit-scrollbar-thumb {
+            background: #60a5fa;
+        }
         #journal-list .publication-item,
         #journal-list > div,
         #conference-list .publication-item,
@@ -226,8 +264,7 @@
         #patents > div:last-child {
             margin-bottom: 0;
         }
-        #journal-list::-webkit-scrollbar, #conference-list::-webkit-scrollbar { width: 6px; }
-        #journal-list::-webkit-scrollbar-thumb, #conference-list::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+
 
         /* News flash */
         .news-flash {
