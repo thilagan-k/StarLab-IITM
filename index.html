@@ -1914,8 +1914,8 @@
         else if (m2) id = m2[1];
         else if (m3) id = m3[1];
         if (id) {
-            // Direct viewable image URL from Drive
-            return 'https://drive.google.com/uc?export=view&id=' + id;
+            // Reliable public image URL for Drive files shared as "Anyone with the link"
+            return 'https://lh3.googleusercontent.com/d/' + id;
         }
         return s;
     }
