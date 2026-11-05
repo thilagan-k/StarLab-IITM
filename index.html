@@ -1817,7 +1817,7 @@
     <!-- Google Sheets → Journal Publications (edit the URL below) -->
     <script>
     // 1. Create a Google Sheet with columns:
-    //    Title | Authors | Journal | Volume | Issue | Year | Pages | Link | CoverImage | IsNew
+    //    Title | Authors | Journal | Volume | Year | Pages | Link | CoverImage | IsNew
     // 2. File → Share → Publish to web → choose the sheet → CSV → Publish
     // 3. Paste the published CSV URL here:
     const JOURNAL_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn9-QDGa5asBAF5iCAmawaL1Qqw3nbqVysUqa8Y4yiEfLnAcIsBlJbpOyCjNzHvfePj3p2B0HXy4yu/pub?output=csv";   // <-- paste your Google Sheet CSV URL here
@@ -1844,7 +1844,6 @@
             const iAuthors = idx('authors');
             const iJournal = idx('journal');
             const iVolume = idx('volume');
-            const iIssue = idx('issue');
             const iYear = idx('year');
             const iPages = idx('pages');
             const iLink = idx('link');
@@ -1860,7 +1859,6 @@
                 const authors = escapeHtml(row[iAuthors] || '');
                 const journal = escapeHtml(row[iJournal] || '');
                 const volume = escapeHtml(row[iVolume] || '');
-                const issue = escapeHtml(row[iIssue] || '');
                 const year = escapeHtml(row[iYear] || '');
                 const pages = escapeHtml(row[iPages] || '');
                 const link = (row[iLink] || '').trim();
@@ -1870,7 +1868,6 @@
                 const metaParts = [];
                 if (journal) metaParts.push(journal);
                 if (volume) metaParts.push('Volume ' + volume);
-                if (issue) metaParts.push('Issue ' + issue);
                 if (year) metaParts.push(year);
                 if (pages) metaParts.push('Pages ' + pages);
                 const meta = metaParts.join(', ');
