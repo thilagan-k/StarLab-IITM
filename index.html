@@ -201,7 +201,27 @@
         .news-flash-track:hover { animation-play-state: paused; }
         @keyframes news-roll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
         .news-flash-content { display: inline-flex; align-items: center; gap: 1.25rem; padding: 0 2rem; font-size: 0.9rem; font-weight: 500; }
-        .news-flash .badge-new { background: #fbbf24; color: #1e3a8a; font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 9999px; }
+        .news-flash .badge-new,
+        .badge-new,
+        .badge-new-pub {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #ffffff !important;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.4), 0 2px 8px rgba(239, 68, 68, 0.4);
+            animation: badge-pulse 1.8s ease-in-out infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 0.35rem;
+        }
+        @keyframes badge-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.4), 0 2px 8px rgba(239, 68, 68, 0.35); }
+            50% { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25), 0 4px 12px rgba(239, 68, 68, 0.5); }
+        }
         .news-flash a { color: #bfdbfe; text-decoration: underline; }
         .news-flash a:hover { color: white; }
         .news-flash-close { position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
