@@ -1914,11 +1914,25 @@
         const section = document.getElementById('ms');
         if (!section) return;
         const grid = section.querySelector('.grid') || section;
-        if (grid) grid.innerHTML = '<p class=\"text-gray-500 col-span-full text-center py-6\">Loading...</p>';
+        if (grid) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Loading...</p>';
         try {
-            const res = await fetch(MS_SHEET_CSV_URL, { cache: 'default' });
-            if (!res.ok) throw new Error('M.S sheet fetch failed');
-            const csv = await res.text();
+            // Retry a few times — Google Sheets published CSV can be flaky
+            let csv = '';
+            let lastErr;
+            for (let attempt = 1; attempt <= 4; attempt++) {
+                try {
+                    const url = MS_SHEET_CSV_URL + (MS_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
+                    const res = await fetch(url, { cache: 'no-store', redirect: 'follow' });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    csv = await res.text();
+                    if (csv && csv.trim().length > 10) break;
+                    throw new Error('Empty response');
+                } catch (err) {
+                    lastErr = err;
+                    await new Promise(r => setTimeout(r, 400 * attempt));
+                }
+            }
+            if (!csv || csv.trim().length < 10) throw lastErr || new Error('M.S sheet fetch failed');
             const rows = parseCSV(csv);
             if (rows.length < 2) return;
             const headers = rows[0].map(h => h.trim().toLowerCase());
@@ -1963,6 +1977,7 @@
             if (html) grid.innerHTML = html;
         } catch (e) {
             console.warn('Could not load M.S sheet:', e);
+            if (grid) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Could not load. <button onclick="loadMSFromSheet()" class="text-blue-600 underline">Retry</button></p>';
         }
     }
 
