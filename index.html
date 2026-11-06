@@ -1697,9 +1697,22 @@
         });
         // Media carousel functionality (smooth infinite-style with bounds)
         const mediaCarouselInner = document.querySelector('.media-carousel-inner');
-        const mediaSlides = document.querySelectorAll('.media-slide');
-        const mediaDots = document.querySelectorAll('.media-dot');
+        let mediaSlides = document.querySelectorAll('.media-slide');
+        let mediaDots = document.querySelectorAll('.media-dot');
         let currentMediaSlide = 0;
+        window.refreshMediaCarousel = function() {
+            mediaSlides = document.querySelectorAll('.media-slide');
+            mediaDots = document.querySelectorAll('.media-dot');
+            currentMediaSlide = 0;
+            mediaDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    clearInterval(autoMediaSlide);
+                    showMediaSlide(parseInt(dot.dataset.mediaSlide));
+                    autoMediaSlide = setInterval(nextMediaSlide, 5000);
+                });
+            });
+            showMediaSlide(0);
+        };
 
         function getVisibleCount() {
             if (window.innerWidth >= 1024) return 3;
@@ -1868,6 +1881,76 @@
     // Conferences Google Sheet
     // Columns: Title | Authors | Conference | Date | Location | Link | CoverImage | IsNew
     const CONFERENCE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZacDlP_cbzI54MIP7w1DacrUEiXZUTrw7WSEFM3w8ZFvD7kLkChLzs_sShYn7bYuSnFN3Pp8KEwg7/pub?output=csv";   // <-- paste your Conferences Google Sheet CSV URL here
+
+
+    // News & Media Google Sheet
+    // Columns: Title | Description | Date | Link | CoverImage | IsNew
+    const NEWS_SHEET_CSV_URL = "";   // <-- paste your News & Media Google Sheet CSV URL here
+
+    async function loadNewsFromSheet() {
+        if (!NEWS_SHEET_CSV_URL) return;
+        const inner = document.querySelector('.media-carousel-inner');
+        if (!inner) return;
+        try {
+            const res = await fetch(NEWS_SHEET_CSV_URL + (NEWS_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now());
+            if (!res.ok) throw new Error('News sheet fetch failed');
+            const csv = await res.text();
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+            const iTitle = idx('title') !== -1 ? idx('title') : 0;
+            const iDesc = idx('description') !== -1 ? idx('description') : idx('summary');
+            const iDate = idx('date');
+            const iLink = idx('link');
+            const iCover = idx('coverimage');
+            const iNew = idx('isnew');
+
+            let html = '';
+            let count = 0;
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
+                const title = escapeHtml(row[iTitle] || '');
+                const desc = escapeHtml(row[iDesc] || '');
+                const date = escapeHtml(row[iDate] || '');
+                const link = (row[iLink] || '').trim();
+                const cover = toImageUrl((row[iCover] || '').trim()) || 'news/Tech-Talk-CDS_KT.png';
+                const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
+                const descText = desc + (date ? (desc ? '. ' : '') + 'Dated : ' + date + '.' : '');
+
+                html += `
+                <div class="media-slide">
+                    <div class="media-card">
+                        <img src="${escapeAttr(cover)}" alt="${title}">
+                        <div class="media-card-content">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${title}${isNew ? ' <span class="badge-new-pub">NEW</span>' : ''}</h3>
+                            <p class="text-gray-600 mb-4">${descText}</p>
+                            ${link ? '<a href="' + escapeAttr(link) + '" class="text-blue-600 hover:text-blue-800 font-medium" target="_blank">Read Article</a>' : ''}
+                        </div>
+                    </div>
+                </div>`;
+                count++;
+            }
+            if (html) {
+                inner.innerHTML = html;
+                // Rebuild dots
+                const nav = document.querySelector('.media-nav');
+                if (nav) {
+                    let dots = '';
+                    for (let i = 0; i < count; i++) {
+                        dots += '<div class="media-dot' + (i === 0 ? ' active' : '') + '" data-media-slide="' + i + '"></div>';
+                    }
+                    nav.innerHTML = dots;
+                }
+                if (typeof window.refreshMediaCarousel === 'function') {
+                    window.refreshMediaCarousel();
+                }
+            }
+        } catch (e) {
+            console.warn('Could not load News sheet:', e);
+        }
+    }
 
     async function loadConferencesFromSheet() {
         if (!CONFERENCE_SHEET_CSV_URL) return;
@@ -2116,7 +2199,7 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); });
+    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); });
     </script>
 
 </body>
