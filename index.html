@@ -1864,6 +1864,72 @@
     // Columns: Title | Inventors | Number | Date | Status | Link | IsNew
     const PATENT_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOw5Jh-CWgB1TNWmMrxju0HFuXn_RN8ODuz6jItC_X8L_XBI-SEFtjv3Yxkg-rCtzY-HPDZaVPY6ey/pub?output=csv";   // <-- paste your Patents Google Sheet CSV URL here
 
+
+    // Conferences Google Sheet
+    // Columns: Title | Authors | Conference | Date | Location | Link | CoverImage | IsNew
+    const CONFERENCE_SHEET_CSV_URL = "";   // <-- paste your Conferences Google Sheet CSV URL here
+
+    async function loadConferencesFromSheet() {
+        if (!CONFERENCE_SHEET_CSV_URL) return;
+        const list = document.getElementById('conference-list');
+        if (!list) return;
+        try {
+            const res = await fetch(CONFERENCE_SHEET_CSV_URL + (CONFERENCE_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now());
+            if (!res.ok) throw new Error('Conference sheet fetch failed');
+            const csv = await res.text();
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+            const iTitle = idx('title') !== -1 ? idx('title') : 0;
+            const iAuthors = idx('authors');
+            const iConf = idx('conference') !== -1 ? idx('conference') : idx('venue');
+            const iDate = idx('date') !== -1 ? idx('date') : idx('year');
+            const iLoc = idx('location') !== -1 ? idx('location') : idx('place');
+            const iLink = idx('link');
+            const iCover = idx('coverimage');
+            const iNew = idx('isnew');
+
+            let html = '';
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
+                const title = escapeHtml(row[iTitle] || '');
+                const authors = escapeHtml(row[iAuthors] || '');
+                const conf = escapeHtml(row[iConf] || '');
+                const date = escapeHtml(row[iDate] || '');
+                const loc = escapeHtml(row[iLoc] || '');
+                const link = (row[iLink] || '').trim();
+                const cover = toImageUrl((row[iCover] || '').trim()) || 'images_J_C/conference/ICP2025.JPG';
+                const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
+
+                const metaParts = [];
+                if (conf) metaParts.push(conf);
+                if (date) metaParts.push(date);
+                if (loc) metaParts.push(loc);
+                const meta = metaParts.join(', ');
+
+                html += `
+                <div class="space-y-6">
+                    <div class="publication-item bg-white rounded-xl shadow-md p-6 flex items-start space-x-4">
+                        <img src="${escapeAttr(cover)}" alt="${title} Cover" class="publication-cover">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${title}${isNew ? ' <span class="badge-new-pub">NEW</span>' : ''}</h3>
+                            <p class="text-gray-600">${authors}${meta ? ' <em>' + meta + '</em>.' : ''} ${link ? '<a href="' + escapeAttr(link) + '" style="color: blue;" target="_blank">Read article</a>' : ''}</p>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            if (html) {
+                list.innerHTML = html;
+                const search = document.getElementById('conference-search');
+                if (search) search.dispatchEvent(new Event('input'));
+            }
+        } catch (e) {
+            console.warn('Could not load Conference sheet:', e);
+        }
+    }
+
     async function loadPatentsFromSheet() {
         if (!PATENT_SHEET_CSV_URL) return;
         const list = document.getElementById('patents');
@@ -2050,7 +2116,7 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); });
+    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); });
     </script>
 
 </body>
