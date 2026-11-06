@@ -1940,12 +1940,9 @@
 
     // Always fetch the latest published sheet (bypass browser + Google cache)
     async function fetchSheetCSV(url) {
+        // No custom headers — they trigger a CORS preflight that Google Sheets rejects
         const bust = url + (url.includes('?') ? '&' : '?') + '_=' + Date.now();
-        const res = await fetch(bust, {
-            cache: 'no-store',
-            redirect: 'follow',
-            headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
-        });
+        const res = await fetch(bust, { cache: 'no-store', redirect: 'follow' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return await res.text();
     }
