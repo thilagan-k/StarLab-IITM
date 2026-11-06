@@ -1993,6 +1993,13 @@
         }
     }
 
+
+    // Reload Alumni Ph.D when its tab is opened
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-sub-tab="phd-Alumni"], [data-tab="Alumni"]');
+        if (btn) setTimeout(loadAlumniPhDFromSheet, 50);
+    });
+
     async function loadMTechFromSheet() {
         if (!MTECH_SHEET_CSV_URL) return;
         const section = document.getElementById('mtech');
@@ -2611,7 +2618,24 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); loadStaffFromSheet(); loadPhDFromSheet(); loadMSFromSheet(); loadMTechFromSheet(); loadAlumniPhDFromSheet(); });
+    window.loadAlumniPhDFromSheet = loadAlumniPhDFromSheet;
+    function runSheetLoaders() {
+        loadJournalFromSheet();
+        loadPatentsFromSheet();
+        loadConferencesFromSheet();
+        loadNewsFromSheet();
+        loadPostDocFromSheet();
+        loadStaffFromSheet();
+        loadPhDFromSheet();
+        loadMSFromSheet();
+        loadMTechFromSheet();
+        loadAlumniPhDFromSheet();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runSheetLoaders);
+    } else {
+        runSheetLoaders();
+    }
     </script>
 
 </body>
