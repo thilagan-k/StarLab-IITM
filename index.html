@@ -1859,6 +1859,64 @@
     // 3. Paste the published CSV URL here:
     const JOURNAL_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn9-QDGa5asBAF5iCAmawaL1Qqw3nbqVysUqa8Y4yiEfLnAcIsBlJbpOyCjNzHvfePj3p2B0HXy4yu/pub?output=csv";   // <-- paste your Google Sheet CSV URL here
 
+
+    // Patents Google Sheet
+    // Columns: Title | Inventors | Number | Date | Status | Link | IsNew
+    const PATENT_SHEET_CSV_URL = "";   // <-- paste your Patents Google Sheet CSV URL here
+
+    async function loadPatentsFromSheet() {
+        if (!PATENT_SHEET_CSV_URL) return;
+        const list = document.getElementById('patents');
+        if (!list) return;
+        try {
+            const res = await fetch(PATENT_SHEET_CSV_URL + (PATENT_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now());
+            if (!res.ok) throw new Error('Patent sheet fetch failed');
+            const csv = await res.text();
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+            const iTitle = idx('title');
+            const iInv = idx('inventors') !== -1 ? idx('inventors') : idx('authors');
+            const iNum = idx('number') !== -1 ? idx('number') : idx('patentnumber');
+            const iDate = idx('date') !== -1 ? idx('date') : idx('year');
+            const iStatus = idx('status');
+            const iLink = idx('link');
+            const iNew = idx('isnew');
+
+            let html = '';
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
+                const title = escapeHtml(row[iTitle] || '');
+                const inventors = escapeHtml(row[iInv] || '');
+                const number = escapeHtml(row[iNum] || '');
+                const date = escapeHtml(row[iDate] || '');
+                const status = escapeHtml(row[iStatus] || '');
+                const link = (row[iLink] || '').trim();
+                const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
+
+                const parts = [];
+                if (inventors) parts.push(inventors);
+                if (number) parts.push(number);
+                if (date) parts.push(date);
+                if (status) parts.push('[' + status + ']');
+                const meta = parts.join(', ');
+
+                html += `
+                <div class="space-y-6">
+                    <div class="publication-item bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">${title}${isNew ? ' <span class="badge-new-pub">NEW</span>' : ''}</h3>
+                        <p class="text-gray-600">${meta}${link ? ' <a href="' + escapeAttr(link) + '" style="color: blue;" target="_blank">View</a>' : ''}</p>
+                    </div>
+                </div>`;
+            }
+            if (html) list.innerHTML = html;
+        } catch (e) {
+            console.warn('Could not load Patents sheet:', e);
+        }
+    }
+
     async function loadJournalFromSheet() {
         if (!JOURNAL_SHEET_CSV_URL) return; // keep existing content if no URL set
 
@@ -1992,7 +2050,7 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', loadJournalFromSheet);
+    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); });
     </script>
 
 </body>
