@@ -1940,9 +1940,10 @@
 
     // Always fetch the latest published sheet (bypass browser + Google cache)
     async function fetchSheetCSV(url) {
-        // No custom headers — they trigger a CORS preflight that Google Sheets rejects
-        const bust = url + (url.includes('?') ? '&' : '?') + '_=' + Date.now();
-        const res = await fetch(bust, { cache: 'no-store', redirect: 'follow' });
+        // 30-second cache key: fast on refresh, still picks up sheet edits quickly
+        const key = Math.floor(Date.now() / 30000);
+        const bust = url + (url.includes('?') ? '&' : '?') + '_=' + key;
+        const res = await fetch(bust, { cache: 'default', redirect: 'follow' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return await res.text();
     }
@@ -1956,14 +1957,14 @@
         try {
             let csv = '';
             let lastErr;
-            for (let attempt = 1; attempt <= 2; attempt++) {
+            for (let attempt = 1; attempt <= 1; attempt++) {
                 try {
                     csv = await fetchSheetCSV(ALUMNI_PDF_SHEET_CSV_URL);
                     if (csv && csv.trim().length > 10) break;
                     throw new Error('Empty response');
                 } catch (err) {
                     lastErr = err;
-                    if (attempt < 2) await new Promise(r => setTimeout(r, 200));
+                    
                 }
             }
             if (!csv || csv.trim().length < 10) throw lastErr || new Error('Alumni Post Doc sheet fetch failed');
@@ -2027,14 +2028,14 @@
         try {
             let csv = '';
             let lastErr;
-            for (let attempt = 1; attempt <= 2; attempt++) {
+            for (let attempt = 1; attempt <= 1; attempt++) {
                 try {
                     csv = await fetchSheetCSV(ALUMNI_MTECH_SHEET_CSV_URL);
                     if (csv && csv.trim().length > 10) break;
                     throw new Error('Empty response');
                 } catch (err) {
                     lastErr = err;
-                    if (attempt < 2) await new Promise(r => setTimeout(r, 200));
+                    
                 }
             }
             if (!csv || csv.trim().length < 10) throw lastErr || new Error('Alumni M.Tech sheet fetch failed');
@@ -2098,14 +2099,14 @@
         try {
             let csv = '';
             let lastErr;
-            for (let attempt = 1; attempt <= 2; attempt++) {
+            for (let attempt = 1; attempt <= 1; attempt++) {
                 try {
                     csv = await fetchSheetCSV(ALUMNI_MS_SHEET_CSV_URL);
                     if (csv && csv.trim().length > 10) break;
                     throw new Error('Empty response');
                 } catch (err) {
                     lastErr = err;
-                    if (attempt < 2) await new Promise(r => setTimeout(r, 200));
+                    
                 }
             }
             if (!csv || csv.trim().length < 10) throw lastErr || new Error('Alumni M.S sheet fetch failed');
@@ -2169,14 +2170,14 @@
         try {
             let csv = '';
             let lastErr;
-            for (let attempt = 1; attempt <= 2; attempt++) {
+            for (let attempt = 1; attempt <= 1; attempt++) {
                 try {
                     csv = await fetchSheetCSV(ALUMNI_PHD_SHEET_CSV_URL);
                     if (csv && csv.trim().length > 10) break;
                     throw new Error('Empty response');
                 } catch (err) {
                     lastErr = err;
-                    if (attempt < 2) await new Promise(r => setTimeout(r, 200));
+                    
                 }
             }
             if (!csv || csv.trim().length < 10) throw lastErr || new Error('Alumni Ph.D sheet fetch failed');
@@ -2243,14 +2244,14 @@
         try {
             let csv = '';
             let lastErr;
-            for (let attempt = 1; attempt <= 4; attempt++) {
+            for (let attempt = 1; attempt <= 1; attempt++) {
                 try {
                     csv = await fetchSheetCSV(MTECH_SHEET_CSV_URL);
                     if (csv && csv.trim().length > 10) break;
                     throw new Error('Empty response');
                 } catch (err) {
                     lastErr = err;
-                    await new Promise(r => setTimeout(r, 400 * attempt));
+                    
                 }
             }
             if (!csv || csv.trim().length < 10) throw lastErr || new Error('M.Tech sheet fetch failed');
@@ -2312,14 +2313,14 @@
             // Retry a few times — Google Sheets published CSV can be flaky
             let csv = '';
             let lastErr;
-            for (let attempt = 1; attempt <= 4; attempt++) {
+            for (let attempt = 1; attempt <= 1; attempt++) {
                 try {
                     csv = await fetchSheetCSV(MS_SHEET_CSV_URL);
                     if (csv && csv.trim().length > 10) break;
                     throw new Error('Empty response');
                 } catch (err) {
                     lastErr = err;
-                    await new Promise(r => setTimeout(r, 400 * attempt));
+                    
                 }
             }
             if (!csv || csv.trim().length < 10) throw lastErr || new Error('M.S sheet fetch failed');
