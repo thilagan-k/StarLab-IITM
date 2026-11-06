@@ -1867,7 +1867,7 @@
 
     // Conferences Google Sheet
     // Columns: Title | Authors | Conference | Date | Location | Link | CoverImage | IsNew
-    const CONFERENCE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZacDlP_cbzI54MIP7w1DacrUEiXZUTrw7WSEFM3w8ZFvD7kLkChLzs_sShYn7bYuSnFN3Pp8KEwg7/pubhtml";   // <-- paste your Conferences Google Sheet CSV URL here
+    const CONFERENCE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZacDlP_cbzI54MIP7w1DacrUEiXZUTrw7WSEFM3w8ZFvD7kLkChLzs_sShYn7bYuSnFN3Pp8KEwg7/pub?output=csv";   // <-- paste your Conferences Google Sheet CSV URL here
 
     async function loadConferencesFromSheet() {
         if (!CONFERENCE_SHEET_CSV_URL) return;
