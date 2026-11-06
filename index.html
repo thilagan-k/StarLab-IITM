@@ -1909,6 +1909,82 @@
     // Columns: Name | Role | Photo | ProfileLink | Scholar | ResearchGate | LinkedIn
     const MS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQTidBRBRo3Et-urF-TlBl_82cIqZ04N3q2UrY5tF0v5XzdCV1UCPWdL45WPmz6qI3YCPAIr7XDVZrD/pub?output=csv";   // <-- paste your M.S Google Sheet CSV URL here
 
+
+    // M.Tech Scholars (Our Stars) Google Sheet
+    // Columns: Name | Role | Photo | ProfileLink | Scholar | ResearchGate | LinkedIn
+    const MTECH_SHEET_CSV_URL = "";   // <-- paste your M.Tech Google Sheet CSV URL here
+
+    async function loadMTechFromSheet() {
+        if (!MTECH_SHEET_CSV_URL) return;
+        const section = document.getElementById('mtech');
+        if (!section) return;
+        const grid = section.querySelector('.grid') || section;
+        if (grid) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Loading...</p>';
+        try {
+            let csv = '';
+            let lastErr;
+            for (let attempt = 1; attempt <= 4; attempt++) {
+                try {
+                    const url = MTECH_SHEET_CSV_URL + (MTECH_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
+                    const res = await fetch(url, { cache: 'no-store', redirect: 'follow' });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    csv = await res.text();
+                    if (csv && csv.trim().length > 10) break;
+                    throw new Error('Empty response');
+                } catch (err) {
+                    lastErr = err;
+                    await new Promise(r => setTimeout(r, 400 * attempt));
+                }
+            }
+            if (!csv || csv.trim().length < 10) throw lastErr || new Error('M.Tech sheet fetch failed');
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+            const iName = idx('name') !== -1 ? idx('name') : 0;
+            const iRole = idx('role') !== -1 ? idx('role') : idx('position');
+            const iPhoto = idx('photo') !== -1 ? idx('photo') : idx('image');
+            const iProfile = idx('profilelink') !== -1 ? idx('profilelink') : idx('profile');
+            const iScholar = idx('scholar') !== -1 ? idx('scholar') : idx('googlescholar');
+            const iRG = idx('researchgate') !== -1 ? idx('researchgate') : idx('rg');
+            const iLI = idx('linkedin');
+
+            let html = '';
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iName] || !String(row[iName]).trim()) continue;
+                const name = escapeHtml(row[iName] || '');
+                const role = escapeHtml(row[iRole] || 'M.Tech');
+                const photo = toImageUrl((row[iPhoto] || '').trim()) || 'people/Jaya Prakash Nakka.png';
+                const profile = (row[iProfile] || '').trim();
+                const scholar = (row[iScholar] || '').trim();
+                const rg = (row[iRG] || '').trim();
+                const li = (row[iLI] || '').trim();
+
+                const nameHtml = profile
+                    ? '<a href="' + escapeAttr(profile) + '" target="_blank"><h3 class="text-xl font-semibold text-gray-900">' + name + '</h3></a>'
+                    : '<h3 class="text-xl font-semibold text-gray-900">' + name + '</h3>';
+
+                let links = '';
+                if (scholar) links += '<a href="' + escapeAttr(scholar) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/Google_Scholar_logo.png" class="w-6 h-6"></a>';
+                if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
+                if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
+
+                html += `
+                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                    <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
+                    ${nameHtml}
+                    <p class="text-gray-600">${role}</p>
+                    ${links ? '<div class="mt-4 flex justify-center space-x-6">' + links + '</div>' : ''}
+                </div>`;
+            }
+            if (html) grid.innerHTML = html;
+        } catch (e) {
+            console.warn('Could not load M.Tech sheet:', e);
+            if (grid) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Could not load. <button onclick="loadMTechFromSheet()" class="text-blue-600 underline">Retry</button></p>';
+        }
+    }
+
     async function loadMSFromSheet() {
         if (!MS_SHEET_CSV_URL) return;
         const section = document.getElementById('ms');
@@ -2456,7 +2532,7 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); loadStaffFromSheet(); loadPhDFromSheet(); loadMSFromSheet(); });
+    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); loadStaffFromSheet(); loadPhDFromSheet(); loadMSFromSheet(); loadMTechFromSheet(); });
     </script>
 
 </body>
