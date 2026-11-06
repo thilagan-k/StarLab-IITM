@@ -1862,7 +1862,7 @@
 
     // Patents Google Sheet
     // Columns: Title | Inventors | Number | Date | Status | Link | IsNew
-    const PATENT_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOw5Jh-CWgB1TNWmMrxju0HFuXn_RN8ODuz6jItC_X8L_XBI-SEFtjv3Yxkg-rCtzY-HPDZaVPY6ey/pubhtml";   // <-- paste your Patents Google Sheet CSV URL here
+    const PATENT_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOw5Jh-CWgB1TNWmMrxju0HFuXn_RN8ODuz6jItC_X8L_XBI-SEFtjv3Yxkg-rCtzY-HPDZaVPY6ey/pub?output=csv";   // <-- paste your Patents Google Sheet CSV URL here
 
     async function loadPatentsFromSheet() {
         if (!PATENT_SHEET_CSV_URL) return;
@@ -1876,7 +1876,7 @@
             if (rows.length < 2) return;
             const headers = rows[0].map(h => h.trim().toLowerCase());
             const idx = (name) => headers.indexOf(name.toLowerCase());
-            const iTitle = idx('title');
+            const iTitle = idx('title') !== -1 ? idx('title') : 0; // first column if no Title header
             const iInv = idx('inventors') !== -1 ? idx('inventors') : idx('authors');
             const iNum = idx('number') !== -1 ? idx('number') : idx('patentnumber');
             const iDate = idx('date') !== -1 ? idx('date') : idx('year');
