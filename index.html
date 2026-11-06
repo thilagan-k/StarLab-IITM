@@ -1919,29 +1919,33 @@
     // Columns: Name | Role | LastKnown | Photo | ProfileLink | Scholar | ResearchGate | LinkedIn
     const ALUMNI_PHD_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSfaPyzVcT-yoijVcU0rMp5VydfY6aq60vZb1f8KhWgae56i-cWHho_GZUJHR9fOEsyJjMWA2ulLueO/pub?output=csv";   // <-- paste your Alumni Ph.D Google Sheet CSV URL here
 
+    let alumniPhDCache = '';
     async function loadAlumniPhDFromSheet() {
         if (!ALUMNI_PHD_SHEET_CSV_URL) return;
         const section = document.getElementById('phd-Alumni');
         if (!section) return;
         const grid = section.querySelector('.grid') || section;
-        if (grid) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Loading...</p>';
+        // Use cache immediately if we already have data
+        if (alumniPhDCache && grid && grid.dataset.loaded === '1') return;
+        if (grid && !alumniPhDCache) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Loading...</p>';
         try {
-            let csv = '';
-            let lastErr;
-            for (let attempt = 1; attempt <= 4; attempt++) {
-                try {
-                    const url = ALUMNI_PHD_SHEET_CSV_URL + (ALUMNI_PHD_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
-                    const res = await fetch(url, { cache: 'no-store', redirect: 'follow' });
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    csv = await res.text();
-                    if (csv && csv.trim().length > 10) break;
-                    throw new Error('Empty response');
-                } catch (err) {
-                    lastErr = err;
-                    await new Promise(r => setTimeout(r, 400 * attempt));
+            let csv = alumniPhDCache;
+            if (!csv) {
+                let lastErr;
+                for (let attempt = 1; attempt <= 2; attempt++) {
+                    try {
+                        const res = await fetch(ALUMNI_PHD_SHEET_CSV_URL, { cache: 'default', redirect: 'follow' });
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        csv = await res.text();
+                        if (csv && csv.trim().length > 10) { alumniPhDCache = csv; break; }
+                        throw new Error('Empty response');
+                    } catch (err) {
+                        lastErr = err;
+                        if (attempt < 2) await new Promise(r => setTimeout(r, 250));
+                    }
                 }
+                if (!csv || csv.trim().length < 10) throw lastErr || new Error('Alumni Ph.D sheet fetch failed');
             }
-            if (!csv || csv.trim().length < 10) throw lastErr || new Error('Alumni Ph.D sheet fetch failed');
             const rows = parseCSV(csv);
             if (rows.length < 2) return;
             const headers = rows[0].map(h => h.trim().toLowerCase());
@@ -1986,7 +1990,7 @@
                     ${links ? '<div class="mt-4 flex justify-center space-x-6">' + links + '</div>' : ''}
                 </div>`;
             }
-            if (html) grid.innerHTML = html;
+            if (html) { grid.innerHTML = html; grid.dataset.loaded = '1'; }
         } catch (e) {
             console.warn('Could not load Alumni Ph.D sheet:', e);
             if (grid) grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-6">Could not load. <button onclick="loadAlumniPhDFromSheet()" class="text-blue-600 underline">Retry</button></p>';
@@ -1994,11 +1998,7 @@
     }
 
 
-    // Reload Alumni Ph.D when its tab is opened
-    document.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-sub-tab="phd-Alumni"], [data-tab="Alumni"]');
-        if (btn) setTimeout(loadAlumniPhDFromSheet, 50);
-    });
+
 
     async function loadMTechFromSheet() {
         if (!MTECH_SHEET_CSV_URL) return;
