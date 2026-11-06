@@ -1892,6 +1892,62 @@
     // Columns: Name | Role | Photo | ProfileLink | Scholar | ResearchGate | LinkedIn
     const POSTDOC_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQisssOBEkyE62kJkDIabh2aWl0oWv9mrGis-nVIfSNX6Gxu2lL1dourHielBI4rYGSTJTtwl0HkVQB/pub?output=csv";   // <-- paste your Post Doc Google Sheet CSV URL here
 
+
+    // Staff (Our Stars) Google Sheet
+    // Columns: Name | Role | Photo | LinkedIn | ProfileLink
+    const STAFF_SHEET_CSV_URL = "";   // <-- paste your Staff Google Sheet CSV URL here
+
+    async function loadStaffFromSheet() {
+        if (!STAFF_SHEET_CSV_URL) return;
+        const section = document.getElementById('staff');
+        if (!section) return;
+        const grid = section.querySelector('.grid') || section;
+        try {
+            const res = await fetch(STAFF_SHEET_CSV_URL + (STAFF_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now());
+            if (!res.ok) throw new Error('Staff sheet fetch failed');
+            const csv = await res.text();
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+            const iName = idx('name') !== -1 ? idx('name') : 0;
+            const iRole = idx('role') !== -1 ? idx('role') : idx('position');
+            const iPhoto = idx('photo') !== -1 ? idx('photo') : idx('image');
+            const iLI = idx('linkedin');
+            const iProfile = idx('profilelink') !== -1 ? idx('profilelink') : idx('profile');
+
+            let html = '';
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iName] || !String(row[iName]).trim()) continue;
+                const name = escapeHtml(row[iName] || '');
+                const role = escapeHtml(row[iRole] || '');
+                const photo = toImageUrl((row[iPhoto] || '').trim()) || 'people/Aurosampad_Mohanty.png';
+                const li = (row[iLI] || '').trim();
+                const profile = (row[iProfile] || '').trim();
+
+                const nameHtml = profile
+                    ? '<a href="' + escapeAttr(profile) + '" target="_blank"><h3 class="text-xl font-semibold text-gray-900">' + name + '</h3></a>'
+                    : '<h3 class="text-xl font-semibold text-gray-900">' + name + '</h3>';
+
+                const links = li
+                    ? '<div class="mt-4 flex justify-center space-x-6"><a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a></div>'
+                    : '';
+
+                html += `
+                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                    <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
+                    ${nameHtml}
+                    <p class="text-gray-600">${role}</p>
+                    ${links}
+                </div>`;
+            }
+            if (html) grid.innerHTML = html;
+        } catch (e) {
+            console.warn('Could not load Staff sheet:', e);
+        }
+    }
+
     async function loadPostDocFromSheet() {
         if (!POSTDOC_SHEET_CSV_URL) return;
         const section = document.getElementById('PDF');
@@ -2260,7 +2316,7 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); });
+    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); loadStaffFromSheet(); });
     </script>
 
 </body>
