@@ -1897,6 +1897,67 @@
     // Columns: Name | Role | Photo | LinkedIn | ProfileLink
     const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxSOtv-KU5XfnAZ8m5xALyionMEcHKdO4vOJawahWit6_RKtPnhviIK1FEzgn1TLHUPfWnVCT-twX6/pub?output=csv";   // <-- paste your Staff Google Sheet CSV URL here
 
+
+    // Ph.D Scholars (Our Stars) Google Sheet
+    // Columns: Name | Role | Photo | ProfileLink | Scholar | ResearchGate | LinkedIn
+    const PHD_SHEET_CSV_URL = "";   // <-- paste your Ph.D Google Sheet CSV URL here
+
+    async function loadPhDFromSheet() {
+        if (!PHD_SHEET_CSV_URL) return;
+        const section = document.getElementById('phd');
+        if (!section) return;
+        const grid = section.querySelector('.grid') || section;
+        try {
+            const res = await fetch(PHD_SHEET_CSV_URL + (PHD_SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now());
+            if (!res.ok) throw new Error('PhD sheet fetch failed');
+            const csv = await res.text();
+            const rows = parseCSV(csv);
+            if (rows.length < 2) return;
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const idx = (name) => headers.indexOf(name.toLowerCase());
+            const iName = idx('name') !== -1 ? idx('name') : 0;
+            const iRole = idx('role') !== -1 ? idx('role') : idx('position');
+            const iPhoto = idx('photo') !== -1 ? idx('photo') : idx('image');
+            const iProfile = idx('profilelink') !== -1 ? idx('profilelink') : idx('profile');
+            const iScholar = idx('scholar') !== -1 ? idx('scholar') : idx('googlescholar');
+            const iRG = idx('researchgate') !== -1 ? idx('researchgate') : idx('rg');
+            const iLI = idx('linkedin');
+
+            let html = '';
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row[iName] || !String(row[iName]).trim()) continue;
+                const name = escapeHtml(row[iName] || '');
+                const role = escapeHtml(row[iRole] || 'Ph.D Research Scholar');
+                const photo = toImageUrl((row[iPhoto] || '').trim()) || 'people/Jawahar_P.png';
+                const profile = (row[iProfile] || '').trim();
+                const scholar = (row[iScholar] || '').trim();
+                const rg = (row[iRG] || '').trim();
+                const li = (row[iLI] || '').trim();
+
+                const nameHtml = profile
+                    ? '<a href="' + escapeAttr(profile) + '" target="_blank"><h3 class="text-xl font-semibold text-gray-900">' + name + '</h3></a>'
+                    : '<h3 class="text-xl font-semibold text-gray-900">' + name + '</h3>';
+
+                let links = '';
+                if (scholar) links += '<a href="' + escapeAttr(scholar) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/Google_Scholar_logo.png" class="w-6 h-6"></a>';
+                if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
+                if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
+
+                html += `
+                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                    <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
+                    ${nameHtml}
+                    <p class="text-gray-600">${role}</p>
+                    ${links ? '<div class="mt-4 flex justify-center space-x-6">' + links + '</div>' : ''}
+                </div>`;
+            }
+            if (html) grid.innerHTML = html;
+        } catch (e) {
+            console.warn('Could not load PhD sheet:', e);
+        }
+    }
+
     async function loadStaffFromSheet() {
         if (!STAFF_SHEET_CSV_URL) return;
         const section = document.getElementById('staff');
@@ -2316,7 +2377,7 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
 
-    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); loadStaffFromSheet(); });
+    document.addEventListener('DOMContentLoaded', () => { loadJournalFromSheet(); loadPatentsFromSheet(); loadConferencesFromSheet(); loadNewsFromSheet(); loadPostDocFromSheet(); loadStaffFromSheet(); loadPhDFromSheet(); });
     </script>
 
 </body>
