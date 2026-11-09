@@ -1771,27 +1771,33 @@
         window.addEventListener('resize', () => {
             showMediaSlide(currentMediaSlide);
         });
-        // Journal search functionality
+        // Journal search — re-query items so it works after Google Sheet load
         const journalSearch = document.getElementById('journal-search');
-        const journalItems = document.querySelectorAll('#journal-list .publication-item');
         if (journalSearch) {
             journalSearch.addEventListener('input', () => {
-                const query = journalSearch.value.toLowerCase();
-                journalItems.forEach(item => {
+                const query = journalSearch.value.toLowerCase().trim();
+                document.querySelectorAll('#journal-list .publication-item').forEach(item => {
                     const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(query) ? 'flex' : 'none';
+                    const show = !query || text.includes(query);
+                    item.style.display = show ? 'flex' : 'none';
+                    if (item.parentElement && item.parentElement.classList.contains('space-y-6')) {
+                        item.parentElement.style.display = show ? '' : 'none';
+                    }
                 });
             });
         }
-        // Conference search functionality
+        // Conference search — re-query items so it works after Google Sheet load
         const conferenceSearch = document.getElementById('conference-search');
-        const conferenceItems = document.querySelectorAll('#conference-list .publication-item');
         if (conferenceSearch) {
             conferenceSearch.addEventListener('input', () => {
-                const query = conferenceSearch.value.toLowerCase();
-                conferenceItems.forEach(item => {
+                const query = conferenceSearch.value.toLowerCase().trim();
+                document.querySelectorAll('#conference-list .publication-item').forEach(item => {
                     const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(query) ? 'flex' : 'none';
+                    const show = !query || text.includes(query);
+                    item.style.display = show ? 'flex' : 'none';
+                    if (item.parentElement && item.parentElement.classList.contains('space-y-6')) {
+                        item.parentElement.style.display = show ? '' : 'none';
+                    }
                 });
             });
         }
