@@ -2865,12 +2865,8 @@
         if (!track || !flash) return;
 
         const items = [];
-        const short = (s, n) => {
-            const t = (s || '').replace(/\s+/g, ' ').trim();
-            return t.length > n ? t.slice(0, n).trim() + '…' : t;
-        };
         const add = (title, href, kind) => {
-            const t = short(title, 42);
+            const t = (title || '').replace(/\s+/g, ' ').trim();
             if (!t || items.some(i => i.title === t)) return;
             items.push({ title: t, href: href || '#publications', extra: kind || '' });
         };
@@ -2903,7 +2899,7 @@
         if (!items.length) return;
 
         const bits = items.map(i => {
-            const label = i.extra ? i.title + ' <em>' + i.extra + '</em>' : i.title;
+            const label = i.title + (i.extra ? ' (' + i.extra + ')' : '');
             const tab = i.href === '#conference-tab' ? 'conference' : (i.extra === 'Patent' ? 'patents' : (i.href === '#news' ? '' : 'journal'));
             const href = i.href === '#conference-tab' ? '#publications' : i.href;
             return '<a href="' + href + '" data-flash-tab="' + tab + '">' + label + '</a>';
