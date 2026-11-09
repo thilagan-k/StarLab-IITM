@@ -2551,8 +2551,8 @@
             for (let r = 1; r < rows.length; r++) {
                 const row = rows[r];
                 if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
-                const title = escapeHtml(row[iTitle] || '');
-                const desc = escapeHtml(row[iDesc] || '');
+                const title = formatText(row[iTitle] || '');
+                const desc = formatText(row[iDesc] || '');
                 const date = escapeHtml(row[iDate] || '');
                 const link = (row[iLink] || '').trim();
                 const cover = toImageUrl((row[iCover] || '').trim()) || 'news/Tech-Talk-CDS_KT.png';
@@ -2615,9 +2615,9 @@
             for (let r = 1; r < rows.length; r++) {
                 const row = rows[r];
                 if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
-                const title = formatChem(escapeHtml(row[iTitle] || ''));
-                const authors = escapeHtml(row[iAuthors] || '');
-                const conf = escapeHtml(row[iConf] || '');
+                const title = formatText(row[iTitle] || '');
+                const authors = formatText(row[iAuthors] || '');
+                const conf = formatText(row[iConf] || '');
                 const date = escapeHtml(row[iDate] || '');
                 const loc = escapeHtml(row[iLoc] || '');
                 const link = (row[iLink] || '').trim();
@@ -2673,8 +2673,8 @@
             for (let r = 1; r < rows.length; r++) {
                 const row = rows[r];
                 if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
-                const title = escapeHtml(row[iTitle] || '');
-                const inventors = escapeHtml(row[iInv] || '');
+                const title = formatText(row[iTitle] || '');
+                const inventors = formatText(row[iInv] || '');
                 const number = escapeHtml(row[iNum] || '');
                 const date = escapeHtml(row[iDate] || '');
                 const status = escapeHtml(row[iStatus] || '');
@@ -2734,9 +2734,9 @@
                 const row = rows[r];
                 if (!row[iTitle] || !row[iTitle].trim()) continue;
 
-                const title = escapeHtml(row[iTitle] || '');
-                const authors = escapeHtml(row[iAuthors] || '');
-                const journal = escapeHtml(row[iJournal] || '');
+                const title = formatText(row[iTitle] || '');
+                const authors = formatText(row[iAuthors] || '');
+                const journal = formatText(row[iJournal] || '');
                 const volume = escapeHtml(row[iVolume] || '');
                 const issue = (iIssue >= 0) ? escapeHtml(row[iIssue] || '') : '';
                 const year = escapeHtml(row[iYear] || '');
@@ -2824,13 +2824,18 @@
     }
 
 
-    // Turn CO2 / H2O etc. into proper subscripts for display
-    function formatChem(s) {
+    // Easy sub/sup from Google Sheet:
+    //   CO~2~  → CO₂ (subscript)
+    //   x^2^   → x² (superscript)
+    //   also accepts <sub>2</sub> and <sup>2</sup>
+    // Easy sub/sup from Google Sheet (type these in any text cell):
+    //   CO~2~        → CO with subscript 2
+    //   m^3^         → m with superscript 3
+    //   CO<sub>2</sub> and x<sup>2</sup> also work if pasted
+    function formatText(s) {
         return String(s)
-            .replace(/CO2/g, 'CO<sub>2</sub>')
-            .replace(/CO₂/g, 'CO<sub>2</sub>')
-            .replace(/H2O/g, 'H<sub>2</sub>O')
-            .replace(/CH4/g, 'CH<sub>4</sub>');
+            .replace(/~([^~]+?)~/g, '<sub>$1</sub>')
+            .replace(/\^([^^]+?)\^/g, '<sup>$1</sup>');
     }
 
     function escapeHtml(s) {
