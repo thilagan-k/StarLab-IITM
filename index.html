@@ -2081,7 +2081,7 @@
                 if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
                 if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
 
-                const graduated = ((iGrad >= 0) && String(row[iGrad] || '').toLowerCase().includes('yes')) || String(row[iRole] || '').toLowerCase().includes('graduated');
+                const graduated = (iGrad >= 0) && String(row[iGrad] || '').toLowerCase().trim() === 'yes';
                 html += `
                 <div class="card bg-white rounded-xl shadow-md p-6 text-center"${graduated ? ' data-graduated="yes" data-level="M.Tech"' : ''}>
                     <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
@@ -2154,7 +2154,7 @@
                 if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
                 if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
 
-                const graduated = ((iGrad >= 0) && String(row[iGrad] || '').toLowerCase().includes('yes')) || String(row[iRole] || '').toLowerCase().includes('graduated');
+                const graduated = (iGrad >= 0) && String(row[iGrad] || '').toLowerCase().trim() === 'yes';
                 html += `
                 <div class="card bg-white rounded-xl shadow-md p-6 text-center"${graduated ? ' data-graduated="yes" data-level="M.S"' : ''}>
                     <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
@@ -2227,7 +2227,7 @@
                 if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
                 if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
 
-                const graduated = ((iGrad >= 0) && String(row[iGrad] || '').toLowerCase().includes('yes')) || String(row[iRole] || '').toLowerCase().includes('graduated');
+                const graduated = (iGrad >= 0) && String(row[iGrad] || '').toLowerCase().trim() === 'yes';
                 html += `
                 <div class="card bg-white rounded-xl shadow-md p-6 text-center"${graduated ? ' data-graduated="yes" data-level="Ph.D"' : ''}>
                     <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
