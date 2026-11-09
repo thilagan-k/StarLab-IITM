@@ -2858,6 +2858,63 @@
     window.loadAlumniMSFromSheet = loadAlumniMSFromSheet;
     window.loadAlumniMTechFromSheet = loadAlumniMTechFromSheet;
     window.loadAlumniPDFFromSheet = loadAlumniPDFFromSheet;
+
+    function updateNewsFlash() {
+        const track = document.querySelector('.news-flash-track');
+        const flash = document.getElementById('news-flash');
+        if (!track || !flash) return;
+
+        const items = [];
+        const add = (title, href, extra) => {
+            const t = (title || '').replace(/\s+/g, ' ').trim();
+            if (!t || items.some(i => i.title === t)) return;
+            items.push({ title: t, href: href || '#publications', extra: extra || '' });
+        };
+
+        // Journals
+        document.querySelectorAll('#journal-list .publication-item').forEach(el => {
+            if (!el.querySelector('.badge-new-pub')) return;
+            const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
+            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#publications';
+            const em = el.querySelector('em');
+            add(title, link, em ? em.textContent.trim() : '');
+        });
+        // Conferences
+        document.querySelectorAll('#conference-list .publication-item').forEach(el => {
+            if (!el.querySelector('.badge-new-pub')) return;
+            const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
+            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#publications';
+            const em = el.querySelector('em');
+            add(title, link, em ? em.textContent.trim() : '');
+        });
+        // Patents
+        document.querySelectorAll('#patents .publication-item').forEach(el => {
+            if (!el.querySelector('.badge-new-pub')) return;
+            const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
+            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#publications';
+            add(title, link, 'Patent');
+        });
+        // News & Media
+        document.querySelectorAll('.media-card').forEach(el => {
+            if (!el.querySelector('.badge-new-pub')) return;
+            const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
+            const desc = el.querySelector('p') ? el.querySelector('p').textContent.trim() : '';
+            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#news';
+            add(title + (desc ? ': ' + desc : ''), link, '');
+        });
+
+        if (!items.length) return;
+
+        const bits = items.map(i => {
+            const label = i.extra ? i.title + ' <em>' + i.extra + '</em>' : i.title;
+            return '<a href="' + i.href + '" target="_blank" rel="noopener">' + label + '</a>';
+        }).join(' · ');
+
+        const block = '<div class="news-flash-content"><span class="badge-new">NEW</span><span>Latest: ' + bits + '</span></div>';
+        track.innerHTML = block + block; // two copies for seamless scroll
+        flash.classList.remove('hidden');
+    }
+
     function runSheetLoaders() {
         loadJournalFromSheet();
         loadPatentsFromSheet();
@@ -2878,6 +2935,9 @@
     } else {
         runSheetLoaders();
     }
+    // Refresh flash after sheets load
+    setTimeout(updateNewsFlash, 2500);
+    setTimeout(updateNewsFlash, 5000);
     </script>
 
 </body>
