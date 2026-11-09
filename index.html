@@ -2865,25 +2865,27 @@
         if (!track || !flash) return;
 
         const items = [];
-        const add = (title, href, extra) => {
-            const t = (title || '').replace(/\s+/g, ' ').trim();
+        const short = (s, n) => {
+            const t = (s || '').replace(/\s+/g, ' ').trim();
+            return t.length > n ? t.slice(0, n).trim() + '…' : t;
+        };
+        const add = (title, href, kind) => {
+            const t = short(title, 42);
             if (!t || items.some(i => i.title === t)) return;
-            items.push({ title: t, href: href || '#publications', extra: extra || '' });
+            items.push({ title: t, href: href || '#publications', extra: kind || '' });
         };
 
         // Journals → Publications (Journals tab)
         document.querySelectorAll('#journal-list .publication-item').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
-            const em = el.querySelector('em');
-            add(title, '#publications', em ? em.textContent.trim() : '');
+            add(title, '#publications', 'Journal');
         });
         // Conferences → Publications (Conferences tab)
         document.querySelectorAll('#conference-list .publication-item').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
-            const em = el.querySelector('em');
-            add(title, '#conference-tab', em ? em.textContent.trim() : '');
+            add(title, '#conference-tab', 'Conference');
         });
         // Patents → Publications (Patents tab)
         document.querySelectorAll('#patents .publication-item').forEach(el => {
@@ -2895,8 +2897,7 @@
         document.querySelectorAll('.media-card').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
-            const desc = el.querySelector('p') ? el.querySelector('p').textContent.trim() : '';
-            add(title + (desc ? ': ' + desc : ''), '#news', '');
+            add(title, '#news', 'News');
         });
 
         if (!items.length) return;
