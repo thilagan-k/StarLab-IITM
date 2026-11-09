@@ -2057,6 +2057,7 @@
             const iScholar = idx('scholar') !== -1 ? idx('scholar') : idx('googlescholar');
             const iRG = idx('researchgate') !== -1 ? idx('researchgate') : idx('rg');
             const iLI = idx('linkedin');
+            const iGrad = idx('graduated') !== -1 ? idx('graduated') : idx('isnew');
 
             let html = '';
             for (let r = 1; r < rows.length; r++) {
@@ -2080,8 +2081,9 @@
                 if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
                 if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
 
+                const graduated = (iGrad >= 0) && ((row[iGrad] || '').toLowerCase().includes('yes'));
                 html += `
-                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                <div class="card bg-white rounded-xl shadow-md p-6 text-center"${graduated ? ' data-graduated="yes" data-level="M.Tech"' : ''}>
                     <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
                     ${nameHtml}
                     ${role ? '<p class="text-gray-600">' + role + '</p>' : ''}
@@ -2128,6 +2130,7 @@
             const iScholar = idx('scholar') !== -1 ? idx('scholar') : idx('googlescholar');
             const iRG = idx('researchgate') !== -1 ? idx('researchgate') : idx('rg');
             const iLI = idx('linkedin');
+            const iGrad = idx('graduated') !== -1 ? idx('graduated') : idx('isnew');
 
             let html = '';
             for (let r = 1; r < rows.length; r++) {
@@ -2151,8 +2154,9 @@
                 if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
                 if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
 
+                const graduated = (iGrad >= 0) && ((row[iGrad] || '').toLowerCase().includes('yes'));
                 html += `
-                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                <div class="card bg-white rounded-xl shadow-md p-6 text-center"${graduated ? ' data-graduated="yes" data-level="M.S"' : ''}>
                     <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
                     ${nameHtml}
                     ${role ? '<p class="text-gray-600">' + role + '</p>' : ''}
@@ -2199,6 +2203,7 @@
             const iScholar = idx('scholar') !== -1 ? idx('scholar') : idx('googlescholar');
             const iRG = idx('researchgate') !== -1 ? idx('researchgate') : idx('rg');
             const iLI = idx('linkedin');
+            const iGrad = idx('graduated') !== -1 ? idx('graduated') : idx('isnew');
 
             let html = '';
             for (let r = 1; r < rows.length; r++) {
@@ -2222,8 +2227,9 @@
                 if (rg) links += '<a href="' + escapeAttr(rg) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/RG_logo.png" class="w-6 h-6"></a>';
                 if (li) links += '<a href="' + escapeAttr(li) + '" class="hover:text-blue-400 transition" target="_blank"><img src="logo/LinkedIn_logo.png" class="w-6 h-6"></a>';
 
+                const graduated = (iGrad >= 0) && ((row[iGrad] || '').toLowerCase().includes('yes'));
                 html += `
-                <div class="card bg-white rounded-xl shadow-md p-6 text-center">
+                <div class="card bg-white rounded-xl shadow-md p-6 text-center"${graduated ? ' data-graduated="yes" data-level="Ph.D"' : ''}>
                     <img src="${escapeAttr(photo)}" alt="${name}" class="rounded-full mx-auto mb-4">
                     ${nameHtml}
                     ${role ? '<p class="text-gray-600">' + role + '</p>' : ''}
@@ -2888,6 +2894,12 @@
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
             add(title, '#publications', 'Patent');
+        });
+        // Graduated (Alumni sheets: Graduated = Yes)
+        document.querySelectorAll('[data-graduated="yes"]').forEach(el => {
+            const name = el.querySelector('h3') ? el.querySelector('h3').textContent.trim() : '';
+            const level = el.getAttribute('data-level') || '';
+            if (name) add(level + ' ~ ' + name, '#team', 'Graduated');
         });
         // News → News section
         document.querySelectorAll('.media-card').forEach(el => {
