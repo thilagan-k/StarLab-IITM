@@ -1,2 +1,2 @@
 # 🌟 STAR Lab IIT MADRAS 🌟 
-# Website link: [(https://thilagan-k.github.io/StarLab-IITM/)]
+# Website link: (https://thilagan-k.github.io/StarLab-IITM/)
