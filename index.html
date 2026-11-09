@@ -278,7 +278,7 @@
         }
         @keyframes gradient-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
         .news-flash-inner { display: flex; align-items: center; height: 100%; position: relative; padding-right: 2.75rem; }
-        .news-flash-track { display: flex; align-items: center; white-space: nowrap; animation: news-roll 42s linear infinite; }
+        .news-flash-track { display: flex; align-items: center; white-space: nowrap; animation: news-roll 90s linear infinite; }
         .news-flash-track:hover { animation-play-state: paused; }
         @keyframes news-roll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
         .news-flash-content { display: inline-flex; align-items: center; gap: 1.25rem; padding: 0 2rem; font-size: 0.9rem; font-weight: 500; }
@@ -2871,43 +2871,41 @@
             items.push({ title: t, href: href || '#publications', extra: extra || '' });
         };
 
-        // Journals
+        // Journals → Publications (Journals tab)
         document.querySelectorAll('#journal-list .publication-item').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
-            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#publications';
             const em = el.querySelector('em');
-            add(title, link, em ? em.textContent.trim() : '');
+            add(title, '#publications', em ? em.textContent.trim() : '');
         });
-        // Conferences
+        // Conferences → Publications (Conferences tab)
         document.querySelectorAll('#conference-list .publication-item').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
-            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#publications';
             const em = el.querySelector('em');
-            add(title, link, em ? em.textContent.trim() : '');
+            add(title, '#conference-tab', em ? em.textContent.trim() : '');
         });
-        // Patents
+        // Patents → Publications (Patents tab)
         document.querySelectorAll('#patents .publication-item').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
-            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#publications';
-            add(title, link, 'Patent');
+            add(title, '#publications', 'Patent');
         });
-        // News & Media
+        // News → News section
         document.querySelectorAll('.media-card').forEach(el => {
             if (!el.querySelector('.badge-new-pub')) return;
             const title = el.querySelector('h3') ? el.querySelector('h3').textContent.replace(/NEW/g, '').trim() : '';
             const desc = el.querySelector('p') ? el.querySelector('p').textContent.trim() : '';
-            const link = el.querySelector('a[href]') ? el.querySelector('a[href]').href : '#news';
-            add(title + (desc ? ': ' + desc : ''), link, '');
+            add(title + (desc ? ': ' + desc : ''), '#news', '');
         });
 
         if (!items.length) return;
 
         const bits = items.map(i => {
             const label = i.extra ? i.title + ' <em>' + i.extra + '</em>' : i.title;
-            return '<a href="' + i.href + '" target="_blank" rel="noopener">' + label + '</a>';
+            const tab = i.href === '#conference-tab' ? 'conference' : (i.extra === 'Patent' ? 'patents' : (i.href === '#news' ? '' : 'journal'));
+            const href = i.href === '#conference-tab' ? '#publications' : i.href;
+            return '<a href="' + href + '" data-flash-tab="' + tab + '">' + label + '</a>';
         }).join(' · ');
 
         const block = '<div class="news-flash-content"><span class="badge-new">NEW</span><span>Latest: ' + bits + '</span></div>';
@@ -2935,6 +2933,16 @@
     } else {
         runSheetLoaders();
     }
+
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest('.news-flash a');
+        if (!a) return;
+        const tab = a.getAttribute('data-flash-tab');
+        if (tab) {
+            const btn = document.querySelector('.tab[data-tab="' + tab + '"]');
+            if (btn) btn.click();
+        }
+    });
     // Refresh flash after sheets load
     setTimeout(updateNewsFlash, 2500);
     setTimeout(updateNewsFlash, 5000);
