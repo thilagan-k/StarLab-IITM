@@ -2618,8 +2618,8 @@
                 const title = formatText(row[iTitle] || '');
                 const authors = formatText(row[iAuthors] || '');
                 const conf = formatText(row[iConf] || '');
-                const date = escapeHtml(row[iDate] || '');
-                const loc = escapeHtml(row[iLoc] || '');
+                const date = formatText(row[iDate] || '');
+                const loc = formatText(row[iLoc] || '');
                 const link = (row[iLink] || '').trim();
                 const cover = toImageUrl((row[iCover] || '').trim()) || 'images_J_C/conference/ICP2025.JPG';
                 const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
@@ -2675,9 +2675,9 @@
                 if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
                 const title = formatText(row[iTitle] || '');
                 const inventors = formatText(row[iInv] || '');
-                const number = escapeHtml(row[iNum] || '');
-                const date = escapeHtml(row[iDate] || '');
-                const status = escapeHtml(row[iStatus] || '');
+                const number = formatText(row[iNum] || '');
+                const date = formatText(row[iDate] || '');
+                const status = formatText(row[iStatus] || '');
                 const link = (row[iLink] || '').trim();
                 const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
 
@@ -2737,10 +2737,10 @@
                 const title = formatText(row[iTitle] || '');
                 const authors = formatText(row[iAuthors] || '');
                 const journal = formatText(row[iJournal] || '');
-                const volume = escapeHtml(row[iVolume] || '');
-                const issue = (iIssue >= 0) ? escapeHtml(row[iIssue] || '') : '';
-                const year = escapeHtml(row[iYear] || '');
-                const pages = escapeHtml(row[iPages] || '');
+                const volume = formatText(row[iVolume] || '');
+                const issue = (iIssue >= 0) ? formatText(row[iIssue] || '') : '';
+                const year = formatText(row[iYear] || '');
+                const pages = formatText(row[iPages] || '');
                 const link = (row[iLink] || '').trim();
                 const cover = toImageUrl((row[iCover] || '').trim()) || 'images_J_C/journal/Energy_Journal.jpg';
                 const isNew = (row[iNew] || '').toLowerCase().includes('yes') || (row[iNew] || '').toLowerCase() === 'new';
