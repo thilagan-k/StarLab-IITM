@@ -2615,7 +2615,7 @@
             for (let r = 1; r < rows.length; r++) {
                 const row = rows[r];
                 if (!row[iTitle] || !String(row[iTitle]).trim()) continue;
-                const title = escapeHtml(row[iTitle] || '');
+                const title = formatChem(escapeHtml(row[iTitle] || ''));
                 const authors = escapeHtml(row[iAuthors] || '');
                 const conf = escapeHtml(row[iConf] || '');
                 const date = escapeHtml(row[iDate] || '');
@@ -2821,6 +2821,16 @@
         }
         if (cur || row.length) { row.push(cur); rows.push(row); }
         return rows.filter(r => r && r.length && r.some(cell => String(cell).trim()));
+    }
+
+
+    // Turn CO2 / H2O etc. into proper subscripts for display
+    function formatChem(s) {
+        return String(s)
+            .replace(/CO2/g, 'CO<sub>2</sub>')
+            .replace(/CO₂/g, 'CO<sub>2</sub>')
+            .replace(/H2O/g, 'H<sub>2</sub>O')
+            .replace(/CH4/g, 'CH<sub>4</sub>');
     }
 
     function escapeHtml(s) {
